@@ -1,0 +1,117 @@
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#F1F5F9">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="20dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Nueva Campaña"
+            android:textSize="26sp"
+            android:textStyle="bold"
+            android:textColor="#1E293B" />
+
+        <EditText
+            android:id="@+id/etContenido"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:hint="¿Qué quieres anunciar? (Texto)"
+            android:background="@android:drawable/editbox_background"
+            android:padding="15dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Seleccionar Ciudad"
+            android:layout_marginTop="15dp"
+            android:textStyle="bold"/>
+        <Spinner
+            android:id="@+id/spCiudad"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:entries="@array/ciudades_ecuador" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginTop="20dp"
+            android:background="#FFFFFF"
+            android:padding="15dp"
+            android:elevation="3dp">
+
+            <TextView
+                android:id="@+id/tvBudgetLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Presupuesto: $10 USD"
+                android:textStyle="bold"
+                android:textColor="#2563EB"/>
+
+            <SeekBar
+                android:id="@+id/sbPresupuesto"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:max="500"
+                android:progress="10"
+                android:layout_marginTop="10dp"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Duración en días:"
+                android:layout_marginTop="15dp"/>
+
+            <EditText
+                android:id="@+id/etDias"
+                android:layout_width="80dp"
+                android:layout_height="wrap_content"
+                android:inputType="number"
+                android:text="5"
+                android:textAlignment="center"/>
+
+            <TextView
+                android:id="@+id/tvAlcance"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Alcance estimado: 1,500 personas"
+                android:textColor="#16A34A"
+                android:layout_marginTop="10dp"
+                android:textStyle="italic"/>
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/btnPublicar"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:text="PUBLICAR EN PANTALLAS"
+            android:layout_marginTop="25dp"
+            android:backgroundTint="#2563EB"
+            android:textColor="#FFFFFF"
+            android:textStyle="bold" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Rendimiento Actual"
+            android:layout_marginTop="35dp"
+            android:textStyle="bold"
+            android:textSize="18sp"/>
+
+        <TextView
+            android:id="@+id/tvStats"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Vistas: 0 | Clics: 0 | Ciudad: -"
+            android:layout_marginTop="10dp"
+            android:textColor="#64748B" />
+
+    </LinearLayout>
+</ScrollView>
