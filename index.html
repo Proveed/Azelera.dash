@@ -1,69 +1,135 @@
 <!DOCTYPE html>
-<html>
+<html lang="es">
 <head>
-    <meta charset="UTF-8"><title>AZELERA ADS - PANEL GRATUITO</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AZELERA ADS - PANEL DE PUBLICACIÓN</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body { background-color: #020617; }
+        .glass { background: rgba(15, 23, 42, 0.8); backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.1); }
+        input[type="file"]::file-selector-button {
+            display: none;
+        }
+    </style>
+</head>
+<body class="text-white min-h-screen flex items-center justify-center p-4 font-sans">
+
+    <div class="max-w-md w-full glass p-8 rounded-[3rem] shadow-2xl">
+        <!-- Logo y Título -->
+        <div class="text-center mb-8">
+            <h1 class="text-3xl font-black italic tracking-tighter text-blue-500 uppercase">
+                Azelera <span class="text-white font-light">Ads</span>
+            </h1>
+            <p class="text-[10px] uppercase tracking-[0.4em] text-slate-500 mt-2">Terminal de Autogestión Atacames</p>
+        </div>
+
+        <div class="space-y-5">
+            <!-- 1. Nombre del Negocio -->
+            <div>
+                <label class="text-[10px] font-bold text-slate-400 uppercase ml-2 mb-2 block">1. Nombre del Comercio</label>
+                <input id="tit" type="text" placeholder="Ej: Cevichería El Chamo" 
+                    class="w-full p-4 bg-black/50 rounded-2xl border border-white/5 outline-none focus:border-blue-600 transition-all text-sm">
+            </div>
+
+            <!-- 2. Subida de Archivo Directa -->
+            <div>
+                <label class="text-[10px] font-bold text-slate-400 uppercase ml-2 mb-2 block">2. Selecciona de tu Galería</label>
+                <label for="archivo" class="flex flex-col items-center justify-center w-full h-32 bg-black/40 border-2 border-dashed border-blue-500/30 rounded-3xl cursor-pointer hover:bg-blue-600/10 transition-all group">
+                    <div class="flex flex-col items-center justify-center pt-5 pb-6">
+                        <svg class="w-8 h-8 mb-3 text-blue-500 group-hover:scale-110 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"></path></svg>
+                        <p id="file-name" class="text-xs text-blue-400 font-bold uppercase tracking-widest">Toca para elegir Foto/Video</p>
+                    </div>
+                    <input id="archivo" type="file" accept="image/*,video/*" class="hidden" onchange="updateFileName()">
+                </label>
+            </div>
+
+            <!-- 3. Link de WhatsApp para el QR -->
+            <div>
+                <label class="text-[10px] font-bold text-slate-400 uppercase ml-2 mb-2 block">3. Link de tu WhatsApp</label>
+                <input id="lin" type="text" placeholder="https://wa.me/593..." 
+                    class="w-full p-4 bg-black/50 rounded-2xl border border-white/5 outline-none focus:border-blue-600 transition-all text-sm">
+            </div>
+
+            <!-- Botón de Acción -->
+            <button id="btn-pub" onclick="enviarAnuncio()" 
+                class="w-full bg-blue-600 hover:bg-blue-500 py-5 rounded-[2rem] font-black text-lg shadow-xl shadow-blue-900/40 uppercase tracking-[0.2em] transition-all transform active:scale-95 mt-4">
+                Publicar Ahora
+            </button>
+            
+            <p id="status" class="text-center text-[10px] font-bold text-blue-400 uppercase animate-pulse hidden"></p>
+        </div>
+    </div>
+
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
         import { getDatabase, ref, push } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
-        
+
+        // Configuración de tu DB
         const db = getDatabase(initializeApp({ databaseURL: "https://navi-9aa8e-default-rtdb.firebaseio.com" }));
 
-        window.publicar = () => {
-            const linkRaw = document.getElementById('med').value.trim();
-            if(!linkRaw) return alert("Por favor, ingresa el texto o el link del archivo");
+        // Mostrar nombre del archivo seleccionado
+        window.updateFileName = () => {
+            const input = document.getElementById('archivo');
+            const label = document.getElementById('file-name');
+            if(input.files.length > 0) {
+                label.innerText = "✅ ARCHIVO LISTO: " + input.files[0].name.substring(0, 15) + "...";
+                label.classList.replace("text-blue-400", "text-green-400");
+            }
+        };
 
-            const data = {
-                titulo: document.getElementById('tit').value || "Cliente Azelera",
-                media: linkRaw,
-                link: document.getElementById('lin').value || "https://wa.me/tu_numero",
-                tipo: document.getElementById('tip').value,
-                color: document.getElementById('col').value,
-                textura: document.getElementById('tex').value,
-                fuente: document.getElementById('fnt').value,
-                activo: true,
-                vence: Date.now() + (parseInt(document.getElementById('dias').value || 1) * 86400000)
-            };
+        window.enviarAnuncio = async () => {
+            const btn = document.getElementById('btn-pub');
+            const status = document.getElementById('status');
+            const file = document.getElementById('archivo').files[0];
+            const titulo = document.getElementById('tit').value;
 
-            push(ref(db, 'carrusel'), data).then(() => {
-                alert("🚀 ¡ANUNCIO EN COLA PARA LA TV!");
+            if(!file || !titulo) return alert("Por favor completa el nombre y selecciona un archivo");
+
+            btn.disabled = true;
+            btn.style.opacity = "0.5";
+            status.innerText = "🚀 SUBIENDO A LA NUBE... ESPERE";
+            status.classList.remove("hidden");
+
+            // Subida Directa a Cloudinary (Servicio gratuito de archivos)
+            const formData = new FormData();
+            formData.append("file", file);
+            formData.append("upload_preset", "ml_default"); 
+
+            try {
+                const res = await fetch("https://api.cloudinary.com/v1_1/demo/auto/upload", {
+                    method: "POST",
+                    body: formData
+                });
+                const cloudData = await res.json();
+                
+                if(!cloudData.secure_url) throw new Error("Error en subida");
+
+                // Guardar en Firebase Carrusel
+                const ad = {
+                    titulo: titulo,
+                    media: cloudData.secure_url,
+                    tipo: file.type.includes('video') ? 'video' : 'image',
+                    link: document.getElementById('lin').value || "https://azelera.com",
+                    color: "#1e3a8a", // Color por defecto premium
+                    fuente: "font-black italic",
+                    textura: "degradado",
+                    activo: true,
+                    vence: Date.now() + (30 * 86400000) // 30 días de vigencia
+                };
+
+                await push(ref(db, 'carrusel'), ad);
+                
+                alert("✅ ¡ANUNCIO PUBLICADO CON ÉXITO ");
                 location.reload();
-            });
+
+            } catch (e) {
+                alert("Error técnico: No se pudo subir el archivo. Intenta con una imagen más liviana.");
+                btn.disabled = false;
+                btn.style.opacity = "1";
+                status.classList.add("hidden");
+            }
         };
     </script>
-</head>
-<body class="bg-[#020617] text-white p-4 font-sans">
-    <div class="max-w-md mx-auto bg-slate-900 p-8 rounded-[2.5rem] border border-white/10 shadow-2xl">
-        <h1 class="text-2xl font-black text-blue-500 mb-2 text-center italic uppercase">Azelera <span class="text-white">Ads</span></h1>
-        <p class="text-[10px] text-center text-slate-400 mb-6 tracking-widest uppercase">Sistema de Pautas Atacames</p>
-
-        <!-- SECCIÓN DE AYUDA PARA EL CLIENTE -->
-        <div class="bg-blue-600/10 border border-blue-500/30 p-4 rounded-2xl mb-6 text-center">
-            <p class="text-[11px] font-bold text-blue-400 mb-2 uppercase">¿No tienes link de tu video/foto?</p>
-            <div class="flex gap-2">
-                <a href="https://es.imgbb.com/" target="_blank" class="flex-1 bg-blue-600 text-[10px] py-2 rounded-lg font-black uppercase">Subir Foto</a>
-                <a href="https://www.file.io/" target="_blank" class="flex-1 bg-slate-800 text-[10px] py-2 rounded-lg font-black uppercase border border-white/10">Subir Video</a>
-            </div>
-            <p class="text-[9px] text-slate-500 mt-2 italic">Sube tu archivo, copia el link y pégalo abajo.</p>
-        </div>
-
-        <input id="tit" type="text" placeholder="Nombre del Negocio" class="w-full p-4 mb-3 bg-black rounded-2xl border border-white/5 outline-none text-sm">
-        
-        <textarea id="med" placeholder="Pega el LINK aquí (o escribe el TEXTO del anuncio)" class="w-full p-4 mb-3 bg-black rounded-2xl border border-white/5 outline-none h-24 text-sm focus:border-blue-500 transition-all"></textarea>
-
-        <div class="grid grid-cols-2 gap-3 mb-6">
-            <select id="tip" class="bg-black p-4 rounded-xl border border-white/5 text-xs font-bold uppercase"><option value="image">📸 Imagen</option><option value="video">🎥 Video</option><option value="texto">📝 Texto Solo</option></select>
-            <input id="col" type="color" value="#1e3a8a" class="w-full h-full bg-transparent border-none">
-            <select id="tex" class="bg-black p-4 rounded-xl border border-white/5 text-[10px] uppercase font-bold"><option value="degradado">Efecto Vivo</option><option value="malla">Malla Pro</option><option value="solido">Liso</option></select>
-            <select id="fnt" class="bg-black p-4 rounded-xl border border-white/5 text-[10px] uppercase font-bold"><option value="font-black italic">Letra Impacto</option><option value="font-serif">Letra Elegante</option></select>
-        </div>
-
-        <input id="lin" type="text" placeholder="Link QR (WhatsApp del cliente)" class="w-full p-4 mb-6 bg-black rounded-2xl border border-white/5 outline-none text-sm">
-        <input id="dias" type="hidden" value="30">
-
-        <button onclick="publicar()" class="w-full bg-blue-600 hover:bg-blue-500 py-5 rounded-3xl font-black text-lg shadow-xl uppercase tracking-widest transition-all">
-            Publicar Anuncio
-        </button>
-    </div>
 </body>
 </html>
