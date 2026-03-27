@@ -1,78 +1,69 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <meta charset="UTF-8"><title>AZELERA STUDIO - DISEÑO</title>
+    <meta charset="UTF-8"><title>AZELERA ADS - PANEL GRATUITO</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-        import { getDatabase, ref, push, onValue, remove } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
+        import { getDatabase, ref, push } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
+        
         const db = getDatabase(initializeApp({ databaseURL: "https://navi-9aa8e-default-rtdb.firebaseio.com" }));
 
         window.publicar = () => {
+            const linkRaw = document.getElementById('med').value.trim();
+            if(!linkRaw) return alert("Por favor, ingresa el texto o el link del archivo");
+
             const data = {
-                titulo: document.getElementById('tit').value,
-                media: document.getElementById('med').value,
-                link: document.getElementById('lin').value,
+                titulo: document.getElementById('tit').value || "Cliente Azelera",
+                media: linkRaw,
+                link: document.getElementById('lin').value || "https://wa.me/tu_numero",
                 tipo: document.getElementById('tip').value,
                 color: document.getElementById('col').value,
-                textura: document.getElementById('tex').value, // NUEVO
-                fuente: document.getElementById('fnt').value,   // NUEVO
+                textura: document.getElementById('tex').value,
+                fuente: document.getElementById('fnt').value,
                 activo: true,
                 vence: Date.now() + (parseInt(document.getElementById('dias').value || 1) * 86400000)
             };
-            push(ref(db, 'carrusel'), data).then(() => alert("Anuncio Programado"));
-        };
 
-        onValue(ref(db, 'carrusel'), (snap) => {
-            const lista = document.getElementById('lista'); lista.innerHTML = "";
-            const data = snap.val(); if(!data) return;
-            Object.keys(data).forEach(id => {
-                lista.innerHTML += `<div class="bg-black/50 p-3 rounded-xl mb-2 flex justify-between items-center border border-white/5">
-                    <span class="text-xs font-bold">${data[id].titulo}</span>
-                    <button onclick="borrar('${id}')" class="text-red-500 text-xs font-black">X</button>
-                </div>`;
+            push(ref(db, 'carrusel'), data).then(() => {
+                alert("🚀 ¡ANUNCIO EN COLA PARA LA TV!");
+                location.reload();
             });
-        });
-        window.borrar = (id) => remove(ref(db, `carrusel/${id}`));
+        };
     </script>
 </head>
 <body class="bg-[#020617] text-white p-4 font-sans">
-    <div class="max-w-md mx-auto bg-slate-900 p-6 rounded-[2.5rem] shadow-2xl border border-white/10">
-        <h1 class="text-xl font-black text-blue-500 mb-4 italic text-center uppercase">Azelera <span class="text-white">Designer</span></h1>
-        
-        <input id="tit" type="text" placeholder="Cliente" class="w-full p-3 mb-2 bg-black rounded-xl border border-white/5 outline-none text-sm">
-        <textarea id="med" placeholder="Texto o Link Directo .mp4 / .jpg" class="w-full p-3 mb-2 bg-black rounded-xl border border-white/5 outline-none h-20 text-sm"></textarea>
-        <input id="lin" type="text" placeholder="Link QR (WhatsApp/Web)" class="w-full p-3 mb-4 bg-black rounded-xl border border-white/5 outline-none text-sm">
+    <div class="max-w-md mx-auto bg-slate-900 p-8 rounded-[2.5rem] border border-white/10 shadow-2xl">
+        <h1 class="text-2xl font-black text-blue-500 mb-2 text-center italic uppercase">Azelera <span class="text-white">Ads</span></h1>
+        <p class="text-[10px] text-center text-slate-400 mb-6 tracking-widest uppercase">Sistema de Pautas Atacames</p>
 
-        <div class="grid grid-cols-2 gap-2 mb-4">
-            <select id="tip" class="bg-black p-3 rounded-xl border border-white/5 text-xs">
-                <option value="texto">📝 TEXTO SOLO</option>
-                <option value="video">🎥 VIDEO MP4</option>
-                <option value="image">🖼️ IMAGEN</option>
-            </select>
-            <div class="flex items-center bg-black rounded-xl border border-white/5 p-2">
-                <input id="col" type="color" value="#1e3a8a" class="w-full h-8 bg-transparent">
+        <!-- SECCIÓN DE AYUDA PARA EL CLIENTE -->
+        <div class="bg-blue-600/10 border border-blue-500/30 p-4 rounded-2xl mb-6 text-center">
+            <p class="text-[11px] font-bold text-blue-400 mb-2 uppercase">¿No tienes link de tu video/foto?</p>
+            <div class="flex gap-2">
+                <a href="https://es.imgbb.com/" target="_blank" class="flex-1 bg-blue-600 text-[10px] py-2 rounded-lg font-black uppercase">Subir Foto</a>
+                <a href="https://www.file.io/" target="_blank" class="flex-1 bg-slate-800 text-[10px] py-2 rounded-lg font-black uppercase border border-white/10">Subir Video</a>
             </div>
-            
-            <select id="tex" class="bg-black p-3 rounded-xl border border-white/5 text-xs text-blue-400">
-                <option value="solido">Liso (Sólido)</option>
-                <option value="degradado">Degradado Vivo</option>
-                <option value="malla">Malla Galáctica</option>
-                <option value="cristal">Cristal Ahumado</option>
-            </select>
-
-            <select id="fnt" class="bg-black p-3 rounded-xl border border-white/5 text-xs text-blue-400">
-                <option value="font-black italic">Impacto (Italic)</option>
-                <option value="font-serif">Elegante (Serif)</option>
-                <option value="font-mono">Tecnológico (Mono)</option>
-                <option value="font-light tracking-[0.2em]">Minimalista</option>
-            </select>
-            
-            <input id="dias" type="number" placeholder="Días" class="bg-black p-3 rounded-xl border border-white/5 text-center text-xs">
+            <p class="text-[9px] text-slate-500 mt-2 italic">Sube tu archivo, copia el link y pégalo abajo.</p>
         </div>
 
-        <button onclick="publicar()" class="w-full bg-blue-600 py-4 rounded-2xl font-black shadow-lg uppercase tracking-widest text-sm">Programar Ahora</button>
-        <div id="lista" class="mt-6 border-t border-white/5 pt-4"></div>
+        <input id="tit" type="text" placeholder="Nombre del Negocio" class="w-full p-4 mb-3 bg-black rounded-2xl border border-white/5 outline-none text-sm">
+        
+        <textarea id="med" placeholder="Pega el LINK aquí (o escribe el TEXTO del anuncio)" class="w-full p-4 mb-3 bg-black rounded-2xl border border-white/5 outline-none h-24 text-sm focus:border-blue-500 transition-all"></textarea>
+
+        <div class="grid grid-cols-2 gap-3 mb-6">
+            <select id="tip" class="bg-black p-4 rounded-xl border border-white/5 text-xs font-bold uppercase"><option value="image">📸 Imagen</option><option value="video">🎥 Video</option><option value="texto">📝 Texto Solo</option></select>
+            <input id="col" type="color" value="#1e3a8a" class="w-full h-full bg-transparent border-none">
+            <select id="tex" class="bg-black p-4 rounded-xl border border-white/5 text-[10px] uppercase font-bold"><option value="degradado">Efecto Vivo</option><option value="malla">Malla Pro</option><option value="solido">Liso</option></select>
+            <select id="fnt" class="bg-black p-4 rounded-xl border border-white/5 text-[10px] uppercase font-bold"><option value="font-black italic">Letra Impacto</option><option value="font-serif">Letra Elegante</option></select>
+        </div>
+
+        <input id="lin" type="text" placeholder="Link QR (WhatsApp del cliente)" class="w-full p-4 mb-6 bg-black rounded-2xl border border-white/5 outline-none text-sm">
+        <input id="dias" type="hidden" value="30">
+
+        <button onclick="publicar()" class="w-full bg-blue-600 hover:bg-blue-500 py-5 rounded-3xl font-black text-lg shadow-xl uppercase tracking-widest transition-all">
+            Publicar Anuncio
+        </button>
     </div>
 </body>
 </html>
