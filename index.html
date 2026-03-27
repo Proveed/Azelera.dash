@@ -3,28 +3,65 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AZELERA - Descarga App Anunciante</title>
+    <title>AZELERA - Panel de Control</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+        import { getDatabase, ref, set } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyD3-C7guJHkmZuwv-TgXNh0XwlYfTSei2k",
+            authDomain: "navi-9aa8e.firebaseapp.com",
+            projectId: "navi-9aa8e",
+            storageBucket: "navi-9aa8e.firebasestorage.app",
+            messagingSenderId: "324234630620",
+            appId: "1:324234630620:web:0a7353de37ac04fabd6b19"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getDatabase(app);
+
+        // Función para actualizar el anuncio en la TV
+        window.actualizarPantalla = () => {
+            const nuevoTexto = document.getElementById('inputAnuncio').value;
+            if(nuevoTexto.trim() === "") return alert("Escribe algo primero");
+
+            set(ref(db, 'anuncio_actual'), {
+                mensaje: nuevoTexto,
+                ultima_actualizacion: Date.now()
+            }).then(() => {
+                alert("¡Anuncio enviado a la TV exitosamente!");
+                document.getElementById('inputAnuncio').value = "";
+            }).catch((error) => {
+                console.error("Error:", error);
+                alert("Error de permisos. Revisa las Reglas en Firebase.");
+            });
+        };
+    </script>
 </head>
-<body class="bg-slate-900 text-white font-sans flex items-center justify-center min-h-screen p-6">
+<body class="bg-[#0f172a] text-white min-h-screen flex items-center justify-center p-6">
 
-    <div class="max-w-sm w-full bg-slate-800 p-8 rounded-[2.5rem] shadow-2xl border border-slate-700 text-center">
-        <div class="w-20 h-20 bg-blue-600 rounded-2xl mx-auto mb-6 flex items-center justify-center shadow-lg">
-            <span class="text-4xl font-black text-white">A</span>
+    <div class="max-w-md w-full bg-[#1e293b] p-8 rounded-[2.5rem] shadow-2xl border border-white/10 text-center">
+        <h1 class="text-3xl font-black mb-6 uppercase tracking-tighter">Azelera <span class="text-blue-500">Control</span></h1>
+
+        <div class="mb-8">
+            <input type="text" id="inputAnuncio" placeholder="Escribe el anuncio para la TV..." 
+                   class="w-full p-4 rounded-xl bg-slate-900 border border-slate-700 text-white mb-4 focus:outline-none focus:border-blue-500">
+            
+            <button onclick="actualizarPantalla()" 
+                    class="w-full bg-green-600 hover:bg-green-500 text-white font-bold py-4 rounded-xl shadow-lg transition-all active:scale-95">
+                🚀 PUBLICAR EN PANTALLAS
+            </button>
         </div>
-        
-        <h1 class="text-3xl font-black mb-2 uppercase tracking-tighter">Azelera <span class="text-blue-500">Ads</span></h1>
-        <p class="text-slate-400 text-sm mb-10">Gestiona tus pantallas en tiempo real desde este celular.</p>
 
-        <a href="https://drive.google.com/uc?export=download&id=ID_DE_TU_ARCHIVO" 
-           download="AzeleraDashboard.apk"
-           class="block w-full bg-blue-600 hover:bg-blue-500 text-white font-bold py-5 rounded-2xl text-lg shadow-xl transition-all active:scale-95">
+        <div class="border-t border-slate-700 my-6"></div>
+
+        <p class="text-slate-400 text-xs mb-4 uppercase tracking-widest">Descargar Aplicación Móvil</p>
+        <a href="https://drive.google.com/uc?export=download&id=PEGA_AQUÍ_TU_ID_DE_DRIVE" 
+           class="block w-full bg-blue-600 hover:bg-blue-500 text-white font-bold py-4 rounded-xl shadow-xl transition-all active:scale-95">
             📥 DESCARGAR APK
         </a>
-
-        <div class="mt-8 pt-6 border-t border-slate-700/50">
-            <p class="text-[10px] text-slate-500 uppercase tracking-widest">Atacames • Ecuador</p>
-        </div>
     </div>
 
 </body>
