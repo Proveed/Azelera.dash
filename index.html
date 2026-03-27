@@ -3,61 +3,72 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AZELERA ADS - PANEL ESTABLE</title>
+    <title>AZELERA ADS - PANEL PROFESIONAL</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <style>
-        body { background-color: #020617; }
-        .glass { background: rgba(15, 23, 42, 0.9); border: 1px solid rgba(255, 255, 255, 0.1); }
-    </style>
 </head>
-<body class="text-white min-h-screen flex items-center justify-center p-6 font-sans">
+<body class="bg-[#020617] text-white min-h-screen flex items-center justify-center p-4 font-sans">
 
-    <div class="max-w-md w-full glass p-8 rounded-[2.5rem] shadow-2xl">
-        <div class="text-center mb-8">
-            <h1 class="text-3xl font-black italic text-blue-500 uppercase">Azelera <span class="text-white font-light">Ads</span></h1>
-            <p class="text-[9px] uppercase tracking-[0.3em] text-slate-500 mt-2">Publicación Directa Atacames</p>
-        </div>
+    <div class="max-w-md w-full bg-slate-900 p-8 rounded-[2.5rem] shadow-2xl border border-white/10">
+        <h1 class="text-2xl font-black italic text-blue-500 mb-6 text-center uppercase">Azelera <span class="text-white">Ads</span></h1>
 
         <div class="space-y-4">
-            <!-- 1. Nombre -->
-            <input id="tit" type="text" placeholder="Nombre del Comercio" 
-                class="w-full p-4 bg-black/50 rounded-2xl border border-white/5 outline-none focus:border-blue-600 text-sm">
+            <!-- 1. IDENTIFICACIÓN -->
+            <div>
+                <label class="text-[10px] font-bold text-slate-500 uppercase ml-2 tracking-widest">Nombre del Negocio</label>
+                <input id="tit" type="text" placeholder="Ej: Cevichería El Faro" class="w-full p-4 bg-black rounded-2xl border border-white/5 outline-none focus:border-blue-600 text-sm">
+            </div>
 
-            <!-- 2. Link o Texto -->
-            <textarea id="med" placeholder="Pega el LINK del video/foto o escribe un mensaje de texto..." 
-                class="w-full p-4 bg-black/50 rounded-2xl border border-white/5 outline-none focus:border-blue-600 h-32 text-sm"></textarea>
+            <!-- 2. CONTENIDO (LINK O TEXTO) -->
+            <div>
+                <label class="text-[10px] font-bold text-slate-500 uppercase ml-2 tracking-widest">Contenido (Link o Mensaje)</label>
+                <textarea id="med" placeholder="Pega el link de la foto/video o escribe el texto del anuncio..." class="w-full p-4 bg-black rounded-2xl border border-white/5 outline-none focus:border-blue-600 h-24 text-sm"></textarea>
+            </div>
 
-            <!-- 3. Selección de Tipo -->
-            <div class="grid grid-cols-2 gap-3 text-[10px] font-bold uppercase">
-                <select id="tip" class="bg-black p-4 rounded-xl border border-white/5 outline-none">
-                    <option value="image">📸 Imagen</option>
-                    <option value="video">🎥 Video</option>
-                    <option value="texto">📝 Solo Texto</option>
-                </select>
-                <div class="flex items-center justify-center bg-black rounded-xl border border-white/5 p-2">
-                    <input id="col" type="color" value="#1e3a8a" class="w-full h-8 bg-transparent border-none cursor-pointer">
+            <!-- 3. CONFIGURACIÓN VISUAL (ESTO ES LO QUE NO CAMBIABA) -->
+            <div class="grid grid-cols-2 gap-3">
+                <div>
+                    <label class="text-[9px] font-bold text-slate-500 uppercase ml-1">Tipo de Anuncio</label>
+                    <select id="tip" class="w-full bg-black p-3 rounded-xl border border-white/5 text-xs font-bold">
+                        <option value="image">📸 Imagen</option>
+                        <option value="video">🎥 Video</option>
+                        <option value="texto">📝 Solo Texto</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="text-[9px] font-bold text-slate-500 uppercase ml-1">Color de Fondo</label>
+                    <input id="col" type="color" value="#1e3a8a" class="w-full h-10 bg-transparent border-none cursor-pointer">
                 </div>
             </div>
 
-            <!-- 4. WhatsApp -->
-            <input id="lin" type="text" placeholder="Link de WhatsApp (QR)" 
-                class="w-full p-4 bg-black/50 rounded-2xl border border-white/5 outline-none text-sm">
-
-            <!-- Botón Publicar -->
-            <button id="btn-pub" onclick="publicar()" 
-                class="w-full bg-blue-600 hover:bg-blue-500 py-5 rounded-[2rem] font-black text-lg shadow-xl uppercase tracking-widest transition-all mt-4">
-                Publicar Ahora
-            </button>
-        </div>
-
-        <!-- Ayuda rápida para el usuario -->
-        <div class="mt-6 p-4 bg-blue-600/5 rounded-2xl border border-blue-500/10 text-center">
-            <p class="text-[9px] text-slate-400 uppercase font-bold mb-2 tracking-tighter">¿No tienes link? Usa estos sitios gratis:</p>
-            <div class="flex gap-2 justify-center">
-                <a href="https://es.imgbb.com/" target="_blank" class="text-[10px] text-blue-400 underline italic">Para Fotos</a>
-                <span class="text-slate-600">|</span>
-                <a href="https://www.file.io/" target="_blank" class="text-[10px] text-blue-400 underline italic">Para Videos</a>
+            <div class="grid grid-cols-2 gap-3">
+                <div>
+                    <label class="text-[9px] font-bold text-slate-500 uppercase ml-1">Efecto Visual</label>
+                    <select id="tex" class="w-full bg-black p-3 rounded-xl border border-white/5 text-xs">
+                        <option value="degradado">✨ Efecto Vivo</option>
+                        <option value="malla">🏁 Fondo Malla</option>
+                        <option value="solido">🎨 Color Liso</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="text-[9px] font-bold text-slate-500 uppercase ml-1">Estilo de Letra</label>
+                    <select id="fnt" class="w-full bg-black p-3 rounded-xl border border-white/5 text-xs">
+                        <option value="font-black italic">Impacto</option>
+                        <option value="font-serif">Elegante</option>
+                        <option value="font-mono">Moderno/Tech</option>
+                    </select>
+                </div>
             </div>
+
+            <!-- 4. LINK PARA EL QR -->
+            <div>
+                <label class="text-[10px] font-bold text-slate-500 uppercase ml-2 tracking-widest">Link WhatsApp (Para el QR)</label>
+                <input id="lin" type="text" placeholder="https://wa.me/593..." class="w-full p-4 bg-black rounded-2xl border border-white/5 outline-none text-sm">
+            </div>
+
+            <!-- BOTÓN DE ACCIÓN -->
+            <button onclick="publicar()" id="btn-pub" class="w-full bg-blue-600 hover:bg-blue-500 py-5 rounded-[2rem] font-black text-lg shadow-xl uppercase tracking-widest transition-all mt-4">
+                Publicar Anuncio
+            </button>
         </div>
     </div>
 
@@ -69,34 +80,42 @@
 
         window.publicar = () => {
             const btn = document.getElementById('btn-pub');
+            const titulo = document.getElementById('tit').value;
             const media = document.getElementById('med').value.trim();
-            const tit = document.getElementById('tit').value;
+            const tipo = document.getElementById('tip').value;
+            const color = document.getElementById('col').value;
+            const textura = document.getElementById('tex').value;
+            const fuente = document.getElementById('fnt').value;
+            const link = document.getElementById('lin').value;
 
-            if(!media || !tit) return alert("❌ Completa el Nombre y el Contenido.");
+            if(!titulo || !media) return alert("❌ Por favor llena el nombre y el contenido");
 
             btn.disabled = true;
-            btn.innerText = "🚀 PUBLICANDO...";
+            btn.innerText = "🚀 ENVIANDO A LA TV...";
 
-            const ad = {
-                titulo: tit,
+            // AHORA SÍ MANDAMOS TODAS LAS VARIABLES QUE LA TV NECESITA
+            const nuevoAnuncio = {
+                titulo: titulo,
                 media: media,
-                tipo: document.getElementById('tip').value,
-                link: document.getElementById('lin').value || "https://wa.me/tu_numero",
-                color: document.getElementById('col').value,
-                fuente: "font-black italic",
-                textura: "degradado",
+                tipo: tipo,
+                color: color,
+                textura: textura,
+                fuente: fuente,
+                link: link || "https://wa.me/tu_numero",
                 activo: true,
-                vence: Date.now() + (30 * 86400000)
+                vence: Date.now() + (30 * 86400000) // 30 días
             };
 
-            push(ref(db, 'carrusel'), ad).then(() => {
-                alert("✅ ¡PUBLICADO! Revisa la TV.");
-                location.reload();
-            }).catch(() => {
-                alert("Error de conexión.");
-                btn.disabled = false;
-                btn.innerText = "Publicar Ahora";
-            });
+            push(ref(db, 'carrusel'), nuevoAnuncio)
+                .then(() => {
+                    alert("✅ ¡ANUNCIO REGISTRADO! Revisa la pantalla.");
+                    location.reload();
+                })
+                .catch((e) => {
+                    alert("Error al conectar con la TV.");
+                    btn.disabled = false;
+                    btn.innerText = "Publicar Anuncio";
+                });
         };
     </script>
 </body>
