@@ -3,58 +3,69 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AZELERA ADS - SISTEMA DE GESTIÓN</title>
+    <title>AZELERA ADS - CONTROL MAESTRO</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body { background-color: #020617; color: white; font-family: sans-serif; }
+        .glass { background: rgba(15, 23, 42, 0.9); border: 1px solid rgba(255, 255, 255, 0.1); backdrop-filter: blur(10px); }
+        input, textarea, select { background: rgba(0,0,0,0.5) !important; border: 1px solid rgba(255,255,255,0.1) !important; color: white !important; outline: none; transition: 0.3s; }
+        input:focus { border-color: #3b82f6 !important; }
+    </style>
 </head>
-<body class="bg-[#020617] text-white min-h-screen p-4 font-sans">
+<body class="p-4 md:p-10">
 
-    <div class="max-w-2xl mx-auto space-y-6">
+    <div class="max-w-4xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-8">
         
-        <!-- FORMULARIO DE EDICIÓN / PUBLICACIÓN -->
-        <div id="form-container" class="bg-slate-900 p-8 rounded-[2.5rem] shadow-2xl border border-white/10 transition-all duration-500">
-            <h1 id="form-title" class="text-2xl font-black italic text-blue-500 mb-6 text-center uppercase tracking-tighter">Nuevo <span class="text-white font-light">Anuncio</span></h1>
+        <!-- FORMULARIO DE GESTIÓN -->
+        <div id="form-card" class="glass p-8 rounded-[2.5rem] shadow-2xl self-start sticky top-10">
+            <h1 id="form-title" class="text-2xl font-black italic text-blue-500 mb-6 uppercase tracking-tighter text-center">Nuevo <span class="text-white font-light">Anuncio</span></h1>
             
-            <input type="hidden" id="edit-id"> <!-- Campo oculto para saber qué editamos -->
+            <input type="hidden" id="edit-id">
 
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <input id="tit" type="text" placeholder="Nombre del Negocio" class="w-full p-4 bg-black rounded-2xl border border-white/5 outline-none focus:border-blue-600 text-sm">
-                <input id="lin" type="text" placeholder="Link WhatsApp (QR)" class="w-full p-4 bg-black rounded-2xl border border-white/5 outline-none focus:border-blue-600 text-sm">
+            <div class="space-y-4">
+                <input id="tit" type="text" placeholder="Nombre del Negocio" class="w-full p-4 rounded-2xl text-sm">
+                <textarea id="med" placeholder="Texto del anuncio o Link de Foto/Video" class="w-full p-4 rounded-2xl h-28 text-sm"></textarea>
                 
-                <textarea id="med" placeholder="Link de Foto/Video o Mensaje de Texto" class="w-full p-4 bg-black rounded-2xl border border-white/5 outline-none focus:border-blue-600 h-24 text-sm md:col-span-2"></textarea>
-
-                <select id="tip" class="bg-black p-4 rounded-xl border border-white/5 text-xs font-bold">
-                    <option value="image">📸 Imagen</option><option value="video">🎥 Video</option><option value="texto">📝 Texto</option>
-                </select>
-                
-                <div class="flex items-center gap-2 bg-black p-2 rounded-xl border border-white/5">
-                    <span class="text-[10px] uppercase font-bold text-slate-500 ml-2">Color:</span>
-                    <input id="col" type="color" value="#1e3a8a" class="flex-1 h-8 bg-transparent border-none cursor-pointer">
+                <div class="grid grid-cols-2 gap-3">
+                    <select id="tip" class="p-4 rounded-2xl text-xs font-bold uppercase">
+                        <option value="texto">📝 Texto + QR</option>
+                        <option value="image">📸 Imagen Full</option>
+                        <option value="video">🎥 Video Full</option>
+                    </select>
+                    <div class="flex items-center gap-3 p-2 glass rounded-2xl">
+                        <span class="text-[10px] font-bold uppercase ml-2 text-slate-400">Fondo:</span>
+                        <input id="col" type="color" value="#1e3a8a" class="flex-1 h-10 cursor-pointer bg-transparent border-none">
+                    </div>
                 </div>
 
-                <select id="tex" class="bg-black p-4 rounded-xl border border-white/5 text-xs font-bold">
-                    <option value="degradado">✨ Efecto Vivo</option><option value="malla">🏁 Malla Pro</option><option value="solido">🎨 Color Liso</option>
-                </select>
+                <div class="grid grid-cols-2 gap-3">
+                    <select id="tex" class="p-4 rounded-2xl text-[10px] font-bold uppercase">
+                        <option value="degradado">✨ Efecto Vivo</option>
+                        <option value="malla">🏁 Fondo Malla</option>
+                        <option value="solido">🎨 Color Liso</option>
+                    </select>
+                    <select id="fnt" class="p-4 rounded-2xl text-[10px] font-bold uppercase">
+                        <option value="font-black italic">Letra Impacto</option>
+                        <option value="font-serif italic">Letra Elegante</option>
+                    </select>
+                </div>
 
-                <select id="fnt" class="bg-black p-4 rounded-xl border border-white/5 text-xs font-bold">
-                    <option value="font-black italic">Letra Impacto</option><option value="font-serif">Letra Elegante</option>
-                </select>
-            </div>
+                <input id="lin" type="text" placeholder="Link WhatsApp (Para el QR)" class="w-full p-4 rounded-2xl text-sm">
 
-            <div class="flex gap-2 mt-6">
-                <button onclick="guardar()" id="btn-save" class="flex-1 bg-blue-600 hover:bg-blue-500 py-5 rounded-[2rem] font-black text-lg shadow-xl uppercase tracking-widest transition-all">
-                    Lanzar Anuncio
-                </button>
-                <button id="btn-cancel" onclick="resetForm()" class="hidden bg-slate-700 hover:bg-slate-600 px-6 rounded-[2rem] font-bold uppercase text-xs">
-                    Cancelar
-                </button>
+                <div class="flex gap-2 pt-4">
+                    <button onclick="guardar()" id="btn-save" class="flex-1 bg-blue-600 hover:bg-blue-500 py-5 rounded-[2rem] font-black uppercase tracking-widest shadow-lg shadow-blue-900/40 active:scale-95 transition-all">Lanzar Anuncio</button>
+                    <button id="btn-cancel" onclick="resetForm()" class="hidden bg-slate-800 px-6 rounded-[2rem] text-[10px] font-bold uppercase hover:bg-slate-700">X</button>
+                </div>
             </div>
         </div>
 
-        <!-- LISTADO DE REGISTROS -->
-        <div class="bg-slate-900 p-8 rounded-[2.5rem] border border-white/10">
-            <h2 class="text-xl font-black mb-6 uppercase text-slate-400 tracking-widest">Gestión de Carrusel</h2>
-            <div id="lista-anuncios" class="space-y-4 text-sm">
-                <!-- Los anuncios cargan aquí -->
+        <!-- REGISTRO DE ANUNCIOS -->
+        <div class="glass p-8 rounded-[2.5rem]">
+            <h2 class="text-xl font-black mb-6 uppercase text-slate-400 tracking-widest flex items-center gap-2">
+                <span class="w-2 h-2 bg-green-500 rounded-full animate-pulse"></span> Carrusel Activo
+            </h2>
+            <div id="lista-anuncios" class="space-y-4">
+                <p class="text-slate-600 text-sm italic">Cargando base de datos...</p>
             </div>
         </div>
     </div>
@@ -65,7 +76,6 @@
 
         const db = getDatabase(initializeApp({ databaseURL: "https://navi-9aa8e-default-rtdb.firebaseio.com" }));
 
-        // GUARDAR O ACTUALIZAR
         window.guardar = () => {
             const id = document.getElementById('edit-id').value;
             const data = {
@@ -75,53 +85,41 @@
                 color: document.getElementById('col').value,
                 textura: document.getElementById('tex').value,
                 fuente: document.getElementById('fnt').value,
-                link: document.getElementById('lin').value || "https://wa.me/tu_numero",
-                activo: true,
-                vence: Date.now() + (30 * 86400000)
+                link: document.getElementById('lin').value || "https://wa.me/593",
+                activo: true
             };
 
-            if(!data.titulo || !data.media) return alert("❌ Datos incompletos");
+            if(!data.titulo || !data.media) return alert("Llena los campos básicos");
 
             if(id) {
-                // ACTUALIZAR REGISTRO EXISTENTE
-                update(ref(db, `carrusel/${id}`), data).then(() => {
-                    alert("✅ Cambios Guardados");
-                    resetForm();
-                });
+                update(ref(db, `carrusel/${id}`), data).then(() => { alert("Editado!"); resetForm(); });
             } else {
-                // CREAR NUEVO
-                push(ref(db, 'carrusel'), data).then(() => {
-                    alert("🚀 Publicado con éxito");
-                    resetForm();
-                });
+                push(ref(db, 'carrusel'), data).then(() => { alert("Publicado!"); resetForm(); });
             }
         };
 
-        // CARGAR LISTA EN TIEMPO REAL
         onValue(ref(db, 'carrusel'), (snap) => {
             const list = document.getElementById('lista-anuncios');
             list.innerHTML = "";
             const ads = snap.val();
-            if(!ads) return list.innerHTML = "<p class='text-slate-600'>No hay anuncios activos.</p>";
-
+            if(!ads) return list.innerHTML = "No hay anuncios.";
             Object.keys(ads).forEach(id => {
                 const ad = ads[id];
                 list.innerHTML += `
-                    <div class="bg-black/40 p-5 rounded-2xl flex items-center justify-between border border-white/5 hover:border-blue-500/20">
-                        <div>
-                            <p class="font-black text-blue-400 uppercase text-xs">${ad.titulo}</p>
-                            <p class="text-[10px] text-slate-500 truncate w-40">${ad.media}</p>
+                    <div class="bg-black/40 p-5 rounded-3xl border border-white/5 flex items-center justify-between">
+                        <div class="overflow-hidden">
+                            <p class="font-black text-blue-400 uppercase text-[10px]">${ad.titulo}</p>
+                            <p class="text-xs truncate w-48 text-slate-300">${ad.media}</p>
                         </div>
                         <div class="flex gap-2">
-                            <button onclick="prepararEdicion('${id}', ${JSON.stringify(ad).replace(/"/g, '&quot;')})" class="bg-blue-900/20 text-blue-400 p-2 rounded-lg hover:bg-blue-600 hover:text-white transition-all text-[10px] font-bold">EDITAR</button>
-                            <button onclick="borrar('${id}')" class="bg-red-900/20 text-red-500 p-2 rounded-lg hover:bg-red-600 hover:text-white transition-all">🗑️</button>
+                            <button onclick="prepararEdicion('${id}', ${JSON.stringify(ad).replace(/"/g, '&quot;')})" class="bg-blue-600/20 text-blue-400 p-2 rounded-xl text-[10px] font-bold uppercase hover:bg-blue-600 hover:text-white">Editar</button>
+                            <button onclick="borrar('${id}')" class="bg-red-600/10 text-red-500 p-2 rounded-xl hover:bg-red-600 hover:text-white">🗑️</button>
                         </div>
                     </div>
                 `;
             });
         });
 
-        // PREPARAR FORMULARIO PARA EDITAR
         window.prepararEdicion = (id, ad) => {
             document.getElementById('edit-id').value = id;
             document.getElementById('tit').value = ad.titulo;
@@ -131,26 +129,24 @@
             document.getElementById('tex').value = ad.textura;
             document.getElementById('fnt').value = ad.fuente;
             document.getElementById('lin').value = ad.link;
-
-            document.getElementById('form-title').innerHTML = "Editando <span class='text-blue-500 font-black'>Anuncio</span>";
+            document.getElementById('form-title').innerText = "Editando Anuncio";
             document.getElementById('btn-save').innerText = "Guardar Cambios";
             document.getElementById('btn-cancel').classList.remove('hidden');
-            document.getElementById('form-container').classList.add('border-blue-500');
+            document.getElementById('form-card').classList.add('border-blue-500');
             window.scrollTo({ top: 0, behavior: 'smooth' });
         };
 
         window.resetForm = () => {
             document.getElementById('edit-id').value = "";
-            document.getElementById('tit').value = "";
-            document.getElementById('med').value = "";
-            document.getElementById('lin').value = "";
-            document.getElementById('form-title').innerHTML = "Nuevo <span class='text-white font-light'>Anuncio</span>";
+            document.getElementById('tit').value = ""; document.getElementById('med').value = "";
+            document.getElementById('form-title').innerText = "Nuevo Anuncio";
             document.getElementById('btn-save').innerText = "Lanzar Anuncio";
             document.getElementById('btn-cancel').classList.add('hidden');
-            document.getElementById('form-container').classList.remove('border-blue-500');
+            document.getElementById('form-card').classList.remove('border-blue-500');
         };
 
-        window.borrar = (id) => { if(confirm("¿Eliminar este anuncio permanentemente?")) remove(ref(db, `carrusel/${id}`)); };
+        window.borrar = (id) => { if(confirm("¿Eliminar?")) remove(ref(db, `carrusel/${id}`)); };
     </script>
 </body>
 </html>
+
