@@ -3,61 +3,60 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AZELERA ADS - PANEL MAESTRO</title>
+    <title>AZELERA ADS - PANEL ESTABLE</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        body { background-color: #020617; font-family: sans-serif; }
-        .glass { background: rgba(15, 23, 42, 0.9); backdrop-filter: blur(12px); border: 1px solid rgba(255, 255, 255, 0.1); }
-        .btn-grad { background: linear-gradient(90deg, #2563eb, #1d4ed8); transition: 0.3s; }
-        .btn-grad:hover { transform: scale(1.02); box-shadow: 0 10px 20px -10px rgba(37, 99, 235, 0.5); }
-        input[type="file"]::file-selector-button { display: none; }
+        body { background-color: #020617; }
+        .glass { background: rgba(15, 23, 42, 0.9); border: 1px solid rgba(255, 255, 255, 0.1); }
     </style>
 </head>
-<body class="text-white min-h-screen flex items-center justify-center p-6">
+<body class="text-white min-h-screen flex items-center justify-center p-6 font-sans">
 
-    <div class="max-w-md w-full glass p-10 rounded-[3rem] shadow-2xl">
-        <!-- Logo -->
-        <div class="text-center mb-10">
-            <h1 class="text-4xl font-black italic tracking-tighter text-blue-500 uppercase">
-                Azelera <span class="text-white font-light">Ads</span>
-            </h1>
-            <div class="h-1 w-16 bg-blue-600 mx-auto mt-2 rounded-full"></div>
+    <div class="max-w-md w-full glass p-8 rounded-[2.5rem] shadow-2xl">
+        <div class="text-center mb-8">
+            <h1 class="text-3xl font-black italic text-blue-500 uppercase">Azelera <span class="text-white font-light">Ads</span></h1>
+            <p class="text-[9px] uppercase tracking-[0.3em] text-slate-500 mt-2">Publicación Directa Atacames</p>
         </div>
 
-        <div class="space-y-6">
+        <div class="space-y-4">
             <!-- 1. Nombre -->
-            <div>
-                <label class="text-[10px] font-bold text-slate-500 uppercase ml-2 tracking-widest mb-2 block">Nombre del Comercio</label>
-                <input id="tit" type="text" placeholder="Ej: Restaurante El Faro" 
-                    class="w-full p-5 bg-black/60 rounded-2xl border border-white/5 outline-none focus:border-blue-600 transition-all text-sm font-medium">
+            <input id="tit" type="text" placeholder="Nombre del Comercio" 
+                class="w-full p-4 bg-black/50 rounded-2xl border border-white/5 outline-none focus:border-blue-600 text-sm">
+
+            <!-- 2. Link o Texto -->
+            <textarea id="med" placeholder="Pega el LINK del video/foto o escribe un mensaje de texto..." 
+                class="w-full p-4 bg-black/50 rounded-2xl border border-white/5 outline-none focus:border-blue-600 h-32 text-sm"></textarea>
+
+            <!-- 3. Selección de Tipo -->
+            <div class="grid grid-cols-2 gap-3 text-[10px] font-bold uppercase">
+                <select id="tip" class="bg-black p-4 rounded-xl border border-white/5 outline-none">
+                    <option value="image">📸 Imagen</option>
+                    <option value="video">🎥 Video</option>
+                    <option value="texto">📝 Solo Texto</option>
+                </select>
+                <div class="flex items-center justify-center bg-black rounded-xl border border-white/5 p-2">
+                    <input id="col" type="color" value="#1e3a8a" class="w-full h-8 bg-transparent border-none cursor-pointer">
+                </div>
             </div>
 
-            <!-- 2. Galería -->
-            <div>
-                <label class="text-[10px] font-bold text-slate-500 uppercase ml-2 tracking-widest mb-2 block">Subir de Galería</label>
-                <label for="archivo" class="flex flex-col items-center justify-center w-full h-40 bg-black/50 border-2 border-dashed border-blue-500/20 rounded-[2.5rem] cursor-pointer hover:border-blue-500/50 transition-all group">
-                    <div id="display-upload" class="flex flex-col items-center justify-center px-4 text-center">
-                        <svg class="w-10 h-10 mb-3 text-blue-500 opacity-60 group-hover:scale-110 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
-                        <p id="file-name" class="text-xs text-blue-400 font-bold uppercase tracking-widest leading-relaxed">Toca para elegir<br>Foto o Video</p>
-                    </div>
-                    <input id="archivo" type="file" accept="image/*,video/*" class="hidden" onchange="previewFile()">
-                </label>
-            </div>
-
-            <!-- 3. WhatsApp -->
-            <div>
-                <label class="text-[10px] font-bold text-slate-500 uppercase ml-2 tracking-widest mb-2 block">WhatsApp para el QR</label>
-                <input id="lin" type="text" placeholder="Ej: https://wa.me/593..." 
-                    class="w-full p-5 bg-black/60 rounded-2xl border border-white/5 outline-none focus:border-blue-600 transition-all text-sm">
-            </div>
+            <!-- 4. WhatsApp -->
+            <input id="lin" type="text" placeholder="Link de WhatsApp (QR)" 
+                class="w-full p-4 bg-black/50 rounded-2xl border border-white/5 outline-none text-sm">
 
             <!-- Botón Publicar -->
-            <div class="pt-4">
-                <button id="btn-pub" onclick="publicar()" 
-                    class="w-full btn-grad py-6 rounded-[2.2rem] font-black text-xl shadow-xl uppercase tracking-[0.2em] active:scale-95">
-                    Publicar Anuncio
-                </button>
-                <p id="status" class="text-center text-[10px] font-black text-blue-500 uppercase mt-4 hidden animate-pulse"></p>
+            <button id="btn-pub" onclick="publicar()" 
+                class="w-full bg-blue-600 hover:bg-blue-500 py-5 rounded-[2rem] font-black text-lg shadow-xl uppercase tracking-widest transition-all mt-4">
+                Publicar Ahora
+            </button>
+        </div>
+
+        <!-- Ayuda rápida para el usuario -->
+        <div class="mt-6 p-4 bg-blue-600/5 rounded-2xl border border-blue-500/10 text-center">
+            <p class="text-[9px] text-slate-400 uppercase font-bold mb-2 tracking-tighter">¿No tienes link? Usa estos sitios gratis:</p>
+            <div class="flex gap-2 justify-center">
+                <a href="https://es.imgbb.com/" target="_blank" class="text-[10px] text-blue-400 underline italic">Para Fotos</a>
+                <span class="text-slate-600">|</span>
+                <a href="https://www.file.io/" target="_blank" class="text-[10px] text-blue-400 underline italic">Para Videos</a>
             </div>
         </div>
     </div>
@@ -66,73 +65,38 @@
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
         import { getDatabase, ref, push } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
 
-        // CONFIGURACIÓN ÚNICA
-        const fbApp = initializeApp({ databaseURL: "https://navi-9aa8e-default-rtdb.firebaseio.com" });
-        const db = getDatabase(fbApp);
+        const db = getDatabase(initializeApp({ databaseURL: "https://navi-9aa8e-default-rtdb.firebaseio.com" }));
 
-        // Vista previa al seleccionar
-        window.previewFile = () => {
-            const file = document.getElementById('archivo').files[0];
-            const label = document.getElementById('file-name');
-            if(file) {
-                const size = (file.size / (1024*1024)).toFixed(1);
-                label.innerHTML = `<span class="text-green-400 italic">LISTO: ${file.name.substring(0,10)}...<br>(${size}MB)</span>`;
-            }
-        };
-
-        window.publicar = async () => {
+        window.publicar = () => {
             const btn = document.getElementById('btn-pub');
-            const status = document.getElementById('status');
-            const file = document.getElementById('archivo').files[0];
+            const media = document.getElementById('med').value.trim();
             const tit = document.getElementById('tit').value;
 
-            if(!file || !tit) return alert("❌ Completa el Nombre y elige el Archivo.");
+            if(!media || !tit) return alert("❌ Completa el Nombre y el Contenido.");
 
-            // Bloquear interfaz
             btn.disabled = true;
-            btn.style.opacity = "0.5";
-            status.innerText = "🚀 SUBIENDO A LA NUBE... ESPERE";
-            status.classList.remove("hidden");
+            btn.innerText = "🚀 PUBLICANDO...";
 
-            // Subida a Cloudinary
-            const formData = new FormData();
-            formData.append("file", file);
-            formData.append("upload_preset", "ml_default"); 
+            const ad = {
+                titulo: tit,
+                media: media,
+                tipo: document.getElementById('tip').value,
+                link: document.getElementById('lin').value || "https://wa.me/tu_numero",
+                color: document.getElementById('col').value,
+                fuente: "font-black italic",
+                textura: "degradado",
+                activo: true,
+                vence: Date.now() + (30 * 86400000)
+            };
 
-            try {
-                // Usamos el endpoint AUTO para que detecte si es video o imagen
-                const res = await fetch("https://api.cloudinary.com/v1_1/demo/auto/upload", {
-                    method: "POST",
-                    body: formData
-                });
-                
-                const cloudData = await res.json();
-                
-                if(!cloudData.secure_url) throw new Error("Fallo en servidor");
-
-                // Guardar en Firebase para la TV
-                const ad = {
-                    titulo: tit,
-                    media: cloudData.secure_url,
-                    tipo: file.type.includes('video') ? 'video' : 'image',
-                    link: document.getElementById('lin').value || "https://wa.me/tu_numero",
-                    color: "#1e3a8a",
-                    fuente: "font-black italic",
-                    textura: "degradado",
-                    activo: true,
-                    vence: Date.now() + (30 * 86400000)
-                };
-
-                await push(ref(db, 'carrusel'), ad);
-                alert("🚀 ¡ANUNCIO PUBLICADO CON ÉXITO!");
+            push(ref(db, 'carrusel'), ad).then(() => {
+                alert("✅ ¡PUBLICADO! Revisa la TV.");
                 location.reload();
-
-            } catch (e) {
-                alert("⚠️ ERROR: El archivo es demasiado pesado para el modo gratuito.\n\nSOLUCIÓN: Intenta con un video de máximo 15 segundos o una foto normal.");
+            }).catch(() => {
+                alert("Error de conexión.");
                 btn.disabled = false;
-                btn.style.opacity = "1";
-                status.classList.add("hidden");
-            }
+                btn.innerText = "Publicar Ahora";
+            });
         };
     </script>
 </body>
