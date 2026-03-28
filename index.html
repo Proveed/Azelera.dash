@@ -3,61 +3,106 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AZELERA ADMIN - MOVIL</title>
+    <title>ADMIN AZELERA - COMPLETO</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <style>
-        body { background: #0a0a0a; color: white; font-family: sans-serif; }
-        .card { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 2rem; }
-        input, select { background: #1a1a1a !important; color: white !important; border: 1px solid #333 !important; }
+        body { background: #050505; color: white; font-family: 'Inter', sans-serif; }
+        .input-group { background: #111; border: 1px solid #222; border-radius: 1rem; padding: 12px; }
+        input, select { background: transparent !important; color: white !important; width: 100%; outline: none; border: none; font-size: 0.9rem; }
+        label { font-size: 0.7rem; color: #666; font-weight: 800; text-transform: uppercase; letter-spacing: 1px; }
+        .btn-primary { background: #2563eb; transition: all 0.3s; }
+        .btn-primary:active { scale: 0.95; background: #1d4ed8; }
     </style>
 </head>
-<body class="p-4 pb-20">
+<body class="p-4 pb-24">
 
     <div class="max-w-md mx-auto">
-        <header class="mb-6">
-            <h1 class="text-2xl font-black text-blue-500">AZELERA<span class="text-white">ADS</span></h1>
-            <p class="text-xs text-gray-500 uppercase tracking-widest">Panel del Anunciante</p>
+        <header class="flex justify-between items-center mb-8">
+            <div>
+                <h1 class="text-2xl font-black text-blue-500">AZELERA<span class="text-white">ADS</span></h1>
+                <p class="text-[10px] text-gray-500 uppercase tracking-[3px]">Marketing Engine</p>
+            </div>
+            <div class="h-10 w-10 bg-blue-600 rounded-full flex items-center justify-center font-bold">LA</div>
         </header>
 
-        <div class="card p-6 space-y-4">
-            <!-- TEXTOS -->
-            <div class="space-y-2">
-                <input type="text" id="tit" placeholder="Título (Ej: Pizza 2x1)" class="w-full p-4 rounded-xl outline-none">
-                <input type="text" id="sub" placeholder="Subtítulo corto" class="w-full p-4 rounded-xl outline-none">
-                <input type="text" id="lin" placeholder="Link QR (WhatsApp)" class="w-full p-4 rounded-xl outline-none">
-            </div>
-
-            <!-- ESTILOS -->
-            <div class="grid grid-cols-2 gap-2">
-                <select id="fnt" class="p-3 rounded-xl text-sm">
-                    <option value="moderno">Fuente Moderna</option>
-                    <option value="impacto">Fuente Impacto</option>
-                    <option value="elegante">Fuente Elegante</option>
-                </select>
-                <div class="flex items-center bg-[#1a1a1a] p-2 rounded-xl border border-[#333]">
-                    <span class="text-[10px] mr-2">Color:</span>
-                    <input type="color" id="clr" value="#FFFFFF" class="flex-1 h-8 bg-transparent">
+        <div class="space-y-4">
+            <!-- SECCIÓN 1: CONTENIDO -->
+            <div class="grid grid-cols-1 gap-3">
+                <div class="input-group">
+                    <label>Título del Anuncio</label>
+                    <input type="text" id="tit" placeholder="Ej: Super Promo 2x1">
+                </div>
+                <div class="input-group">
+                    <label>Subtítulo / Descripción</label>
+                    <input type="text" id="sub" placeholder="Ej: Solo por este fin de semana">
                 </div>
             </div>
-            
-            <input type="text" id="bg_hex" placeholder="Color Fondo Hex (Ej: #ff0000)" class="w-full p-4 rounded-xl outline-none text-sm">
 
-            <!-- SUBIDA -->
-            <label class="flex flex-col items-center justify-center border-2 border-dashed border-gray-700 rounded-2xl p-6 active:bg-white/5">
-                <span id="ad-status" class="text-xs font-bold uppercase text-gray-400">Toca para subir Media</span>
+            <!-- SECCIÓN 2: DATOS DE NEGOCIO -->
+            <div class="grid grid-cols-2 gap-3">
+                <div class="input-group">
+                    <label>Nombre Local</label>
+                    <input type="text" id="comercio" placeholder="Nombre">
+                </div>
+                <div class="input-group">
+                    <label>WhatsApp (Link QR)</label>
+                    <input type="text" id="lin" placeholder="https://wa.me/...">
+                </div>
+            </div>
+
+            <!-- SECCIÓN 3: CONFIGURACIÓN VISUAL -->
+            <div class="grid grid-cols-2 gap-3">
+                <div class="input-group">
+                    <label>Tipografía</label>
+                    <select id="fnt">
+                        <option value="moderno">Moderno</option>
+                        <option value="impacto">Impacto</option>
+                        <option value="elegante">Elegante</option>
+                    </select>
+                </div>
+                <div class="input-group">
+                    <label>Color Texto</label>
+                    <input type="color" id="clr" value="#FFFFFF" class="h-6 mt-1">
+                </div>
+            </div>
+
+            <div class="grid grid-cols-2 gap-3">
+                <div class="input-group">
+                    <label>Color Fondo (Hex)</label>
+                    <input type="text" id="bg_hex" placeholder="#1e3a8a">
+                </div>
+                <div class="input-group">
+                    <label>Segundos (Imagen)</label>
+                    <input type="number" id="duracion" value="12">
+                </div>
+            </div>
+
+            <!-- SECCIÓN 4: MEDIA -->
+            <div id="drop-area" class="border-2 border-dashed border-blue-900/50 rounded-2xl p-8 text-center bg-blue-900/5 active:bg-blue-900/20">
                 <input type="file" id="file-ad" class="hidden" accept="image/*,video/*">
-            </label>
+                <label for="file-ad" class="cursor-pointer">
+                    <div id="ad-status" class="text-blue-400 font-bold text-sm">SUBIR VIDEO O IMAGEN</div>
+                    <p class="text-[10px] text-gray-600 mt-1">MP4, JPG o PNG</p>
+                </label>
+            </div>
 
             <input type="hidden" id="med_url">
             <input type="hidden" id="tipo">
 
-            <button onclick="enviar()" id="btn" class="w-full bg-blue-600 hover:bg-blue-500 text-white font-bold py-4 rounded-2xl transition-all active:scale-95">
-                🚀 LANZAR A TV
+            <!-- BOTÓN PRINCIPAL -->
+            <button onclick="enviar()" id="btn-enviar" class="w-full btn-primary py-5 rounded-2xl font-black text-lg shadow-lg shadow-blue-900/20">
+                PUBLICAR EN TV
             </button>
         </div>
 
-        <div id="lista" class="mt-8 space-y-3"></div>
+        <!-- LISTADO DE ANUNCIOS ACTIVOS -->
+        <div class="mt-10">
+            <h2 class="text-xs font-bold text-gray-500 uppercase mb-4 tracking-widest">Anuncios en Pantalla</h2>
+            <div id="lista-ads" class="space-y-3">
+                <!-- Se cargan dinámicamente -->
+            </div>
+        </div>
     </div>
 
     <script>
@@ -65,60 +110,80 @@
         const supabaseKey = 'sb_publishable_KpDcdMU8_qJaeztUIhTxFg_DRvLUOQk';
         const _supabase = supabase.createClient(supabaseUrl, supabaseKey);
 
-        // Subida de archivo
+        // Lógica de Subida
         document.getElementById('file-ad').onchange = async (e) => {
             const file = e.target.files[0];
             const status = document.getElementById('ad-status');
             status.innerText = "SUBIENDO...";
             
-            const name = `${Date.now()}.${file.name.split('.').pop()}`;
-            const { data } = await _supabase.storage.from('anuncios').upload(`media/${name}`, file);
+            const fileName = `${Date.now()}_${file.name}`;
+            const { data, error } = await _supabase.storage.from('anuncios').upload(`media/${fileName}`, file);
             
             if (data) {
-                const { data: url } = _supabase.storage.from('anuncios').getPublicUrl(`media/${name}`);
-                document.getElementById('med_url').value = url.publicUrl;
+                const { data: urlData } = _supabase.storage.from('anuncios').getPublicUrl(`media/${fileName}`);
+                document.getElementById('med_url').value = urlData.publicUrl;
                 document.getElementById('tipo').value = file.type.includes('video') ? 'video' : 'image';
-                status.innerText = "✅ CARGADO";
+                status.innerText = "✅ ARCHIVO LISTO";
+                status.classList.replace('text-blue-400', 'text-green-400');
             }
         };
 
         async function enviar() {
-            const btn = document.getElementById('btn');
-            btn.innerText = "ENVIANDO...";
+            const btn = document.getElementById('btn-enviar');
+            btn.innerText = "PROCESANDO...";
             
-            const payload = {
+            const adData = {
                 titulo: document.getElementById('tit').value,
                 subtitulo: document.getElementById('sub').value,
+                comercio: document.getElementById('comercio').value, // Recuperado
                 link: document.getElementById('lin').value,
                 font_family: document.getElementById('fnt').value,
-                bg_color: document.getElementById('bg_hex').value || '#1e3a8a',
+                bg_color: document.getElementById('bg_hex').value || '#000000',
                 color: document.getElementById('clr').value,
+                duracion: document.getElementById('duracion').value, // Recuperado
                 media: document.getElementById('med_url').value,
                 tipo: document.getElementById('tipo').value,
                 activo: true
             };
 
-            await _supabase.from('anuncios').insert([payload]);
-            location.reload();
+            const { error } = await _supabase.from('anuncios').insert([adData]);
+            
+            if (!error) {
+                alert("Anuncio enviado con éxito");
+                location.reload();
+            } else {
+                alert("Error al enviar");
+                btn.innerText = "REINTENTAR";
+            }
         }
 
-        async function cargar() {
-            const { data } = await _supabase.from('anuncios').select('*').order('id', {ascending:false});
-            document.getElementById('lista').innerHTML = data.map(ad => `
-                <div class="card p-4 flex items-center justify-between">
-                    <span class="text-xs truncate w-40">${ad.titulo}</span>
-                    <button onclick="borrar(${ad.id})" class="text-red-500 text-xs font-bold">ELIMINAR</button>
+        async function cargarAds() {
+            const { data } = await _supabase.from('anuncios').select('*').order('id', {ascending: false});
+            const lista = document.getElementById('lista-ads');
+            lista.innerHTML = data.map(ad => `
+                <div class="bg-[#111] p-4 rounded-2xl flex items-center justify-between border border-white/5">
+                    <div class="flex items-center gap-3">
+                        <div class="w-10 h-10 rounded-lg bg-gray-800 overflow-hidden">
+                            ${ad.tipo === 'video' ? '<div class="w-full h-full bg-blue-900"></div>' : `<img src="${ad.media}" class="w-full h-full object-cover">`}
+                        </div>
+                        <div>
+                            <p class="text-sm font-bold truncate w-32">${ad.titulo}</p>
+                            <p class="text-[10px] text-gray-500">${ad.comercio || 'Sin nombre'}</p>
+                        </div>
+                    </div>
+                    <button onclick="eliminar(${ad.id})" class="bg-red-900/20 text-red-500 p-2 px-4 rounded-xl text-[10px] font-bold">ELIMINAR</button>
                 </div>
             `).join('');
         }
 
-        async function borrar(id) {
-            if(confirm("¿Borrar?")) {
+        async function eliminar(id) {
+            if(confirm("¿Seguro que quieres quitarlo de la TV?")) {
                 await _supabase.from('anuncios').delete().eq('id', id);
-                cargar();
+                cargarAds();
             }
         }
-        cargar();
+
+        cargarAds();
     </script>
 </body>
 </html>
