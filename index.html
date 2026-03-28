@@ -3,79 +3,128 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ADMIN AZELERA - EDIT MODE</title>
+    <title>ADMIN AZELERA - CONTROL TOTAL</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <style>
-        body { background: #050505; color: white; font-family: sans-serif; padding-bottom: 40px; }
-        .input-group { background: #111; border: 1px solid #222; border-radius: 1rem; padding: 10px; margin-bottom: 10px; }
-        label { font-size: 10px; color: #555; font-weight: bold; text-transform: uppercase; }
-        input, select { background: transparent; color: white; width: 100%; border: none; outline: none; }
+        body { background: #050505; color: white; font-family: 'Inter', sans-serif; }
+        .input-group { background: #111; border: 1px solid #222; border-radius: 1rem; padding: 12px; margin-bottom: 12px; }
+        label { font-size: 0.7rem; color: #666; font-weight: 800; text-transform: uppercase; letter-spacing: 1px; }
+        input, select { background: transparent !important; color: white !important; width: 100%; outline: none; border: none; font-size: 0.9rem; }
+        .btn-update { background: #16a34a; } /* Verde para edición */
+        .btn-create { background: #2563eb; } /* Azul para nuevo */
     </style>
 </head>
-<body class="p-4">
-    <div class="max-w-md mx-auto">
-        <h1 class="text-xl font-black mb-6 text-blue-500">ADMIN <span class="text-white">AZELERA</span></h1>
+<body class="p-4 pb-24">
 
-        <div id="form-container" class="space-y-2">
-            <div class="input-group"><label>Título</label><input type="text" id="tit"></div>
-            <div class="input-group"><label>Subtítulo</label><input type="text" id="sub"></div>
-            <div class="input-group"><label>WhatsApp/Link</label><input type="text" id="lin"></div>
-            
-            <div class="grid grid-cols-2 gap-2">
-                <div class="input-group"><label>Comercio</label><input type="text" id="comercio"></div>
-                <div class="input-group"><label>Duración (Seg)</label><input type="number" id="duracion" value="12"></div>
+    <div class="max-w-md mx-auto">
+        <header class="mb-8">
+            <h1 class="text-2xl font-black text-blue-500">AZELERA<span class="text-white">ADS</span></h1>
+            <p id="mode-text" class="text-[10px] text-gray-500 uppercase tracking-[3px]">Nuevo Anuncio</p>
+        </header>
+
+        <!-- FORMULARIO CON TODOS TUS CAMPOS ORIGINALES -->
+        <div class="space-y-2">
+            <div class="input-group">
+                <label>Título del Anuncio</label>
+                <input type="text" id="tit" placeholder="Ej: Promo Hamburguesas">
+            </div>
+            <div class="input-group">
+                <label>Subtítulo / Promo</label>
+                <input type="text" id="sub" placeholder="Ej: Solo por hoy 2x1">
             </div>
 
-            <div class="grid grid-cols-2 gap-2">
-                <div class="input-group"><label>Fuente</label>
+            <div class="grid grid-cols-2 gap-3">
+                <div class="input-group">
+                    <label>Nombre Local/Comercio</label>
+                    <input type="text" id="comercio" placeholder="Mi Local">
+                </div>
+                <div class="input-group">
+                    <label>WhatsApp / Link QR</label>
+                    <input type="text" id="lin" placeholder="https://wa.me/...">
+                </div>
+            </div>
+
+            <div class="grid grid-cols-2 gap-3">
+                <div class="input-group">
+                    <label>Tipografía</label>
                     <select id="fnt">
                         <option value="moderno">Moderno</option>
                         <option value="impacto">Impacto</option>
                         <option value="elegante">Elegante</option>
                     </select>
                 </div>
-                <div class="input-group"><label>Color Texto</label><input type="color" id="clr" value="#FFFFFF"></div>
+                <div class="input-group">
+                    <label>Color Texto</label>
+                    <input type="color" id="clr" value="#FFFFFF" class="h-6 mt-1">
+                </div>
             </div>
 
-            <div class="input-group"><label>Fondo Hex (Verde Lima: #00FF00)</label><input type="text" id="bg_hex" placeholder="#000000"></div>
+            <div class="grid grid-cols-2 gap-3">
+                <div class="input-group">
+                    <label>Color Fondo (Hex)</label>
+                    <input type="text" id="bg_hex" placeholder="#00FF00">
+                </div>
+                <div class="input-group">
+                    <label>Duración (Seg)</label>
+                    <input type="number" id="duracion" value="12">
+                </div>
+            </div>
 
-            <div class="border-2 border-dashed border-gray-800 p-4 rounded-2xl text-center mb-4">
+            <!-- SUBIDA DE MEDIA -->
+            <div class="border-2 border-dashed border-gray-800 rounded-2xl p-6 text-center bg-white/5">
                 <input type="file" id="file-ad" class="hidden">
-                <label for="file-ad" id="ad-status" class="cursor-pointer text-blue-400 text-sm">CAMBIAR O SUBIR MEDIA</label>
+                <label for="file-ad" class="cursor-pointer">
+                    <div id="ad-status" class="text-blue-400 font-bold text-sm">SUBIR O CAMBIAR MEDIA</div>
+                </label>
             </div>
 
-            <input type="hidden" id="med_url"><input type="hidden" id="tipo">
+            <!-- CAMPOS OCULTOS PARA LOGICA -->
+            <input type="hidden" id="med_url">
+            <input type="hidden" id="tipo">
+            <input type="hidden" id="edit_id"> <!-- ID para saber si editamos -->
 
-            <button onclick="enviar()" id="btn-main" class="w-full bg-blue-600 py-4 rounded-2xl font-bold text-lg">PUBLICAR NUEVO</button>
-            <button onclick="cancelarEdicion()" id="btn-cancel" class="w-full bg-gray-800 py-2 rounded-xl text-xs hidden mt-2">CANCELAR EDICIÓN</button>
+            <button onclick="enviar()" id="btn-main" class="w-full btn-create py-5 rounded-2xl font-black text-lg mt-4 shadow-xl">
+                PUBLICAR EN TV
+            </button>
+            
+            <button onclick="cancelarEdicion()" id="btn-cancel" class="w-full bg-gray-800 py-3 rounded-2xl font-bold text-xs mt-2 hidden">
+                CANCELAR EDICIÓN
+            </button>
         </div>
 
-        <div class="mt-10 space-y-3" id="lista-ads"></div>
+        <!-- LISTA DE ANUNCIOS -->
+        <div class="mt-10">
+            <h2 class="text-[10px] font-bold text-gray-600 uppercase mb-4 tracking-widest">Gestión de Anuncios</h2>
+            <div id="lista-ads" class="space-y-3"></div>
+        </div>
     </div>
 
     <script>
         const supabaseUrl = 'https://vasfdurinslsoprkvusm.supabase.co';
         const supabaseKey = 'sb_publishable_KpDcdMU8_qJaeztUIhTxFg_DRvLUOQk';
         const _supabase = supabase.createClient(supabaseUrl, supabaseKey);
-        let editId = null;
 
+        // Subida de archivos (Mantenida)
         document.getElementById('file-ad').onchange = async (e) => {
             const file = e.target.files[0];
-            document.getElementById('ad-status').innerText = "SUBIENDO...";
+            const status = document.getElementById('ad-status');
+            status.innerText = "SUBIENDO...";
             const name = `${Date.now()}_${file.name}`;
             const { data } = await _supabase.storage.from('anuncios').upload(`media/${name}`, file);
             if (data) {
                 const { data: url } = _supabase.storage.from('anuncios').getPublicUrl(`media/${name}`);
                 document.getElementById('med_url').value = url.publicUrl;
                 document.getElementById('tipo').value = file.type.includes('video') ? 'video' : 'image';
-                document.getElementById('ad-status').innerText = "✅ MEDIA LISTA";
+                status.innerText = "✅ MEDIA LISTA";
             }
         };
 
         async function enviar() {
             const btn = document.getElementById('btn-main');
-            const data = {
+            const id = document.getElementById('edit_id').value;
+            
+            const payload = {
                 titulo: document.getElementById('tit').value,
                 subtitulo: document.getElementById('sub').value,
                 comercio: document.getElementById('comercio').value,
@@ -89,55 +138,63 @@
                 activo: true
             };
 
-            if (editId) {
-                await _supabase.from('anuncios').update(data).eq('id', editId);
-                alert("Actualizado");
+            if (id) {
+                // MODO EDICIÓN: Actualiza el registro existente
+                const { error } = await _supabase.from('anuncios').update(payload).eq('id', id);
+                if (!error) alert("¡Anuncio Actualizado!");
             } else {
-                await _supabase.from('anuncios').insert([data]);
-                alert("Publicado");
+                // MODO NUEVO: Inserta registro
+                const { error } = await _supabase.from('anuncios').insert([payload]);
+                if (!error) alert("¡Anuncio Publicado!");
             }
             location.reload();
         }
 
         async function cargarAds() {
-            const { data } = await _supabase.from('anuncios').select('*').order('id', {ascending:false});
-            document.getElementById('lista-ads').innerHTML = data.map(ad => `
-                <div class="bg-[#111] p-4 rounded-xl flex justify-between items-center border border-white/5">
-                    <div>
-                        <p class="font-bold text-sm">${ad.titulo}</p>
-                        <p class="text-[10px] text-gray-500">${ad.comercio}</p>
+            const { data } = await _supabase.from('anuncios').select('*').order('id', {ascending: false});
+            const lista = document.getElementById('lista-ads');
+            lista.innerHTML = data.map(ad => `
+                <div class="bg-[#111] p-4 rounded-2xl flex items-center justify-between border border-white/5">
+                    <div class="truncate mr-4">
+                        <p class="text-sm font-bold truncate">${ad.titulo}</p>
+                        <p class="text-[9px] text-gray-500 uppercase">${ad.comercio || 'Local'}</p>
                     </div>
                     <div class="flex gap-2">
-                        <button onclick='prepararEdicion(${JSON.stringify(ad)})' class="text-blue-500 text-[10px] font-bold">EDITAR</button>
-                        <button onclick="eliminar(${ad.id})" class="text-red-500 text-[10px] font-bold">BORRAR</button>
+                        <button onclick='editar(${JSON.stringify(ad).replace(/'/g, "&apos;")})' class="text-blue-500 text-[10px] font-bold bg-blue-500/10 p-2 rounded-lg">EDITAR</button>
+                        <button onclick="eliminar(${ad.id})" class="text-red-500 text-[10px] font-bold bg-red-500/10 p-2 rounded-lg">BORRAR</button>
                     </div>
                 </div>
             `).join('');
         }
 
-        function prepararEdicion(ad) {
-            editId = ad.id;
+        function editar(ad) {
+            document.getElementById('edit_id').value = ad.id;
             document.getElementById('tit').value = ad.titulo;
             document.getElementById('sub').value = ad.subtitulo;
             document.getElementById('comercio').value = ad.comercio;
             document.getElementById('lin').value = ad.link;
-            document.getElementById('duracion').value = ad.duracion;
             document.getElementById('fnt').value = ad.font_family;
             document.getElementById('bg_hex').value = ad.bg_color;
             document.getElementById('clr').value = ad.color;
+            document.getElementById('duracion').value = ad.duracion;
             document.getElementById('med_url').value = ad.media;
             document.getElementById('tipo').value = ad.tipo;
-            
-            document.getElementById('btn-main').innerText = "ACTUALIZAR ANUNCIO";
-            document.getElementById('btn-main').classList.replace('bg-blue-600', 'bg-green-600');
+
+            // Cambiar interfaz a modo edición
+            document.getElementById('mode-text').innerText = "Editando Anuncio #" + ad.id;
+            document.getElementById('btn-main').innerText = "ACTUALIZAR CAMBIOS";
+            document.getElementById('btn-main').className = "w-full btn-update py-5 rounded-2xl font-black text-lg mt-4 shadow-xl";
             document.getElementById('btn-cancel').classList.remove('hidden');
-            window.scrollTo(0,0);
+            window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
         function cancelarEdicion() { location.reload(); }
 
         async function eliminar(id) {
-            if(confirm("¿Eliminar?")) { await _supabase.from('anuncios').delete().eq('id', id); cargarAds(); }
+            if(confirm("¿Eliminar anuncio de la TV?")) {
+                await _supabase.from('anuncios').delete().eq('id', id);
+                cargarAds();
+            }
         }
 
         cargarAds();
