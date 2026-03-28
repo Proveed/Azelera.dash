@@ -18,15 +18,19 @@
         .glass { background: rgba(255, 255, 255, 0.03); backdrop-filter: blur(20px); border: 1px solid rgba(255, 255, 255, 0.08); box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37); }
         .glow-active { box-shadow: 0 0 20px rgba(59, 130, 246, 0.4); border-color: rgba(59, 130, 246, 0.5); }
         
+        /* Estilos de Letra */
         .font-moderno { font-family: 'Plus Jakarta Sans', sans-serif; }
         .font-impacto { font-family: 'Oswald', sans-serif; }
         .font-elegante { font-family: 'Playfair Display', serif; }
 
+        /* QR Preview */
         .qr-container { background: white; padding: 10px; border-radius: 16px; display: inline-block; box-shadow: 0 4px 15px rgba(0,0,0,0.2); }
         #qr-title-preview { color: #0f172a; font-weight: 800; font-size: 10px; text-transform: uppercase; text-align: center; margin-bottom: 2px; }
         #qr-sub-preview { color: #475569; font-size: 8px; text-align: center; margin-bottom: 4px; max-width: 100px; }
 
+        /* Estilo para los selectores */
         select { -webkit-appearance: none; appearance: none; }
+        
         ::-webkit-scrollbar { width: 0px; background: transparent; }
     </style>
 </head>
@@ -39,7 +43,7 @@
         </div>
         <div class="flex items-center gap-2 glass px-3 py-1.5 rounded-full border border-green-500/30">
             <div class="w-2 h-2 rounded-full bg-green-500 shadow-[0_0_10px_#22c55e] animate-pulse"></div>
-            <span class="text-xs text-green-300 font-bold uppercase">TV ON</span>
+            <span class="text-xs text-green-300 font-bold">TV ON</span>
         </div>
     </div>
 
@@ -50,12 +54,12 @@
         </div>
 
         <div class="space-y-3">
-            <input type="text" id="tit" placeholder="Título (Ej: Sabor Increíble)" class="w-full bg-white/5 border border-white/10 p-4 rounded-2xl text-sm outline-none placeholder:text-gray-600 text-white">
-            <input type="text" id="sub" placeholder="Subtítulo (Ej: Promo solo hoy)" class="w-full bg-white/5 border border-white/10 p-4 rounded-2xl text-sm outline-none placeholder:text-gray-600 text-white">
-            <input type="text" id="lin" placeholder="Link o WhatsApp (para el QR)" class="w-full bg-white/5 border border-white/10 p-4 rounded-2xl text-sm outline-none placeholder:text-gray-600 text-white">
+            <input type="text" id="tit" placeholder="Título (Ej: Sabor Increíble)" class="w-full bg-white/5 border border-white/10 p-4 rounded-2xl text-sm focus:ring-1 focus:ring-blue-500 focus:border-blue-500 outline-none placeholder:text-gray-600">
+            <input type="text" id="sub" placeholder="Subtítulo (Ej: Promo solo hoy)" class="w-full bg-white/5 border border-white/10 p-4 rounded-2xl text-sm focus:ring-1 focus:ring-blue-500 focus:border-blue-500 outline-none placeholder:text-gray-600">
+            <input type="text" id="lin" placeholder="Link o WhatsApp (para el QR)" class="w-full bg-white/5 border border-white/10 p-4 rounded-2xl text-sm focus:ring-1 focus:ring-blue-500 focus:border-blue-500 outline-none placeholder:text-gray-600">
         </div>
 
-        <label for="file-upload" id="file-label" class="group flex flex-col items-center justify-center border-2 border-dashed border-white/10 rounded-2xl p-5 transition-all active:scale-95 cursor-pointer relative">
+        <label for="file-upload" id="file-label" class="group flex flex-col items-center justify-center border-2 border-dashed border-white/10 rounded-2xl p-5 transition-all active:scale-95 cursor-pointer hover:border-blue-500/50 hover:bg-blue-950/20 relative">
             <span class="text-3xl mb-1">🎬</span>
             <span id="file-info" class="text-[10px] font-bold text-gray-400 uppercase tracking-wider text-center">Video o Foto</span>
             <input type="file" id="file-upload" class="hidden" accept="image/*,video/*">
@@ -64,23 +68,24 @@
 
         <div class="grid grid-cols-2 gap-3 text-xs">
             <div class="space-y-1.5">
-                <label class="font-bold text-gray-500 uppercase tracking-wider text-[9px]">Color</label>
+                <label class="font-bold text-gray-500 uppercase tracking-wider text-[9px]">Color de Letra</label>
                 <input type="color" id="col" value="#3b82f6" class="w-full h-10 bg-white/5 border border-white/10 rounded-xl cursor-pointer p-1">
             </div>
             <div class="space-y-1.5">
-                <label class="font-bold text-gray-500 uppercase tracking-wider text-[9px]">Letra</label>
-                <select id="fon" class="w-full h-10 bg-white/5 border border-white/10 rounded-xl px-3 outline-none font-bold text-white bg-slate-900">
-                    <option value="font-moderno">Moderno</option>
-                    <option value="font-impacto">Impacto</option>
-                    <option value="font-elegante">Elegante</option>
+                <label class="font-bold text-gray-500 uppercase tracking-wider text-[9px]">Tipo de Letra</label>
+                <select id="fon" class="w-full h-10 bg-white/5 border border-white/10 rounded-xl px-3 focus:ring-1 focus:ring-blue-500 outline-none font-bold">
+                    <option value="font-moderno" class="font-moderno text-black">Moderno</option>
+                    <option value="font-impacto" class="font-impacto text-black">Impacto</option>
+                    <option value="font-elegante" class="font-elegante text-black">Elegante</option>
                 </select>
             </div>
             <div class="space-y-1.5 col-span-2">
                 <label class="font-bold text-gray-500 uppercase tracking-wider text-[9px]">Fondo de Pantalla TV</label>
-                <select id="bkg" class="w-full h-10 bg-white/5 border border-white/10 rounded-xl px-3 outline-none font-bold text-white bg-slate-900">
-                    <option value="bg-cosmico">Cósmico Profundo (Oscuro)</option>
-                    <option value="bg-aurora">Aurora Boreal (Verde/Azul)</option>
-                    <option value="bg-minimal">Gris Minimalista</option>
+                <select id="bkg" class="w-full h-10 bg-white/5 border border-white/10 rounded-xl px-3 focus:ring-1 focus:ring-blue-500 outline-none font-bold">
+                    <option value="bg-cosmico" class="text-black">Cósmico Profundo (Oscuro)</option>
+                    <option value="bg-aurora" class="text-black">Aurora Boreal (Verde/Azul)</option>
+                    <option value="bg-nebulosa" class="text-black">Nebulosa Rosa (Abstracto)</option>
+                    <option value="bg-minimal" class="text-black">Gris Minimalista</option>
                 </select>
             </div>
         </div>
@@ -89,17 +94,16 @@
             <div id="qr-preview-area" class="hidden text-center">
                 <div class="qr-container flex flex-col items-center">
                     <p id="qr-title-preview">TÍTULO</p>
-                    <p id="qr-sub-preview">Subtítulo</p>
+                    <p id="qr-sub-preview">Subtítulo sutil</p>
                     <div id="qrcode-canvas"></div>
                 </div>
             </div>
-            <p id="no-qr-msg" class="text-[10px] text-gray-600 italic">QR se activará con un link</p>
+            <p id="no-qr-msg" class="text-[10px] text-gray-600 italic">El QR se generará al poner un link</p>
         </div>
 
         <input type="hidden" id="med">
         <input type="hidden" id="tip" value="image">
-        <input type="hidden" id="edit-id" value=""> 
-        <button id="btn-lanzar" onclick="guardarOActualizar()" class="w-full bg-blue-600 text-white font-800 py-4 rounded-2xl shadow-lg active:scale-95 uppercase text-xs tracking-widest flex items-center justify-center gap-2">
+        <input type="hidden" id="edit-id" value=""> <button id="btn-lanzar" onclick="guardarOActualizar()" class="w-full bg-blue-600 hover:bg-blue-500 text-white font-800 py-4 rounded-2xl shadow-lg shadow-blue-900/30 transition-all active:scale-95 uppercase text-xs tracking-widest flex items-center justify-center gap-2 glow-blue">
             <span id="btn-icon">🚀</span> <span id="btn-text">LANZAR A LA TV</span>
         </button>
     </div>
@@ -109,21 +113,23 @@
             <h2 class="text-[10px] font-bold text-gray-400 tracking-[0.3em] uppercase">Anuncios en Pantalla</h2>
             <button onclick="cargarAnuncios()" class="text-xs text-blue-400 active:scale-90">🔄</button>
         </div>
+        
         <div id="lista-anuncios" class="grid gap-4">
-            <!-- Cargando historial... -->
+            <div class="text-center py-8 text-gray-600 text-sm animate-pulse">Cargando anuncios...</div>
         </div>
     </div>
 
     <script>
-        // CREDENCIALES RECUPERADAS DE TU CÓDIGO ORIGINAL
-        const supabaseUrl = 'https://TU_PROYECTO.supabase.co'; // <--- Pon tu URL real aquí
-        const supabaseKey = 'TU_API_KEY_PUBLISHABLE'; // <--- Pon tu API KEY real aquí
+        // CONFIGURACIÓN SUPABASE
+        const supabaseUrl = 'https://TU_PROYECTO.supabase.co';
+        const supabaseKey = 'TU_API_KEY_PUBLISHABLE';
         const _supabase = supabase.createClient(supabaseUrl, supabaseKey);
-        const BUCKET_NAME = 'anuncios';
+        const BUCKET_NAME = 'anuncios'; // O 'ANUNCIOS'
 
         let qrcode;
         let modoEdicion = false;
 
+        // INICIALIZAR
         window.addEventListener('load', () => {
             qrcode = new QRCode(document.getElementById("qrcode-canvas"), {
                 text: "https://azelera.com",
@@ -132,49 +138,85 @@
             cargarAnuncios();
         });
 
+        // ACTUALIZAR PREVIEW DINÁMICO
+        const inTit = document.getElementById('tit');
+        const inSub = document.getElementById('sub');
+        const inLin = document.getElementById('lin');
+        const qrPreviewArea = document.getElementById('qr-preview-area');
+        const qrTitlePreview = document.getElementById('qr-title-preview');
+        const qrSubPreview = document.getElementById('qr-sub-preview');
+        const noQrMsg = document.getElementById('no-qr-msg');
+
         function actualizarQR() {
-            const link = document.getElementById('lin').value.trim();
-            document.getElementById('qr-title-preview').innerText = document.getElementById('tit').value.trim() || "TÍTULO";
-            document.getElementById('qr-sub-preview').innerText = document.getElementById('sub').value.trim() || "Subtítulo";
+            const titulo = inTit.value.trim() || "ESCRIBE TÍTULO";
+            const subtitulo = inSub.value.trim() || "Subtítulo";
+            const link = inLin.value.trim();
+
+            qrTitlePreview.innerText = titulo;
+            qrSubPreview.innerText = subtitulo;
 
             if (link) {
                 qrcode.makeCode(link);
-                document.getElementById('qr-preview-area').classList.remove('hidden');
-                document.getElementById('no-qr-msg').classList.add('hidden');
+                qrPreviewArea.classList.remove('hidden');
+                noQrMsg.classList.add('hidden');
             } else {
-                document.getElementById('qr-preview-area').classList.add('hidden');
-                document.getElementById('no-qr-msg').classList.remove('hidden');
+                qrPreviewArea.classList.add('hidden');
+                noQrMsg.classList.remove('hidden');
             }
         }
 
-        ['tit', 'sub', 'lin'].forEach(id => document.getElementById(id).addEventListener('input', actualizarQR));
+        inTit.addEventListener('input', actualizarQR);
+        inSub.addEventListener('input', actualizarQR);
+        inLin.addEventListener('input', actualizarQR);
 
+        // SUBIR ARCHIVO
         document.getElementById('file-upload').addEventListener('change', async (e) => {
             const file = e.target.files[0];
             if (!file) return;
-            const info = document.getElementById('file-info');
-            info.innerText = "SUBIENDO...";
             
-            const fileName = `${Date.now()}_${file.name}`;
+            const info = document.getElementById('file-info');
+            const previewMic = document.getElementById('file-preview-mic');
+            info.innerText = "SUBIENDO... ⏳";
+            info.classList.add('animate-pulse');
+
+            const ext = file.name.split('.').pop();
+            const fileName = `${Date.now()}.${ext}`;
+
             const { data, error } = await _supabase.storage.from(BUCKET_NAME).upload(fileName, file);
             
             if (data) {
                 const { data: urlData } = _supabase.storage.from(BUCKET_NAME).getPublicUrl(fileName);
                 document.getElementById('med').value = urlData.publicUrl; 
-                info.innerText = "✅ ARCHIVO LISTO";
+                info.innerText = `✅ ARCHIVO LISTO`;
+                info.classList.remove('animate-pulse');
+                info.classList.add('text-blue-400');
+                
+                // Mini preview
+                if(file.type.includes('image')){
+                    previewMic.src = urlData.publicUrl;
+                    previewMic.classList.remove('hidden');
+                } else {
+                    previewMic.classList.add('hidden');
+                }
+                
                 document.getElementById('tip').value = file.type.includes('video') ? 'video' : 'image';
+            } else {
+                alert("Error de Storage: " + error.message);
+                info.innerText = "❌ ERROR AL SUBIR";
+                info.classList.remove('animate-pulse');
             }
         });
 
+        // GUARDAR O ACTUALIZAR ANUNCIO
         async function guardarOActualizar() {
-            const media = document.getElementById('med').value;
-            if(!media) return alert("Sube un archivo primero");
+            const mediaUrl = document.getElementById('med').value;
+            if(!mediaUrl) return alert("Sube un video o foto primero.");
 
             const payload = {
-                titulo: document.getElementById('tit').value.trim(),
-                subtitulo: document.getElementById('sub').value.trim(),
-                link: document.getElementById('lin').value.trim(),
-                media: media,
+                titulo: inTit.value.trim() || "ANUNCIO",
+                subtitulo: inSub.value.trim() || "",
+                link: inLin.value.trim() || "https://wa.me/593",
+                media: mediaUrl,
                 tipo: document.getElementById('tip').value,
                 color: document.getElementById('col').value,
                 fuente: document.getElementById('fon').value,
@@ -183,98 +225,119 @@
             };
 
             if (modoEdicion) {
+                // ACTUALIZAR
                 const id = document.getElementById('edit-id').value;
                 const { error } = await _supabase.from('anuncios').update(payload).eq('id', id);
-                if (!error) { alert("ACTUALIZADO"); cancelarEdicion(); cargarAnuncios(); }
-                else alert("Error: " + error.message);
+                if (!error) {
+                    alert("✅ ANUNCIO ACTUALIZADO EN TV");
+                    cancelarEdicion();
+                    cargarAnuncios();
+                } else { alert("Error al actualizar: " + error.message); }
             } else {
+                // CREAR NUEVO
                 const { error } = await _supabase.from('anuncios').insert([payload]);
-                if (!error) { alert("LANZADO"); location.reload(); }
-                else alert("Error: " + error.message);
+                if (!error) {
+                    alert("🚀 LANZADO A LA TV EXITOSAMENTE");
+                    location.reload();
+                } else { alert("Error al guardar: " + error.message); }
             }
         }
 
+        // CARGAR LISTA
         async function cargarAnuncios() {
             const list = document.getElementById('lista-anuncios');
             const { data, error } = await _supabase.from('anuncios').select('*').order('id', { ascending: false });
-            
             list.innerHTML = "";
-            if (error) { list.innerHTML = `<p class="text-xs text-center text-red-500">${error.message}</p>`; return; }
-            if (!data || data.length === 0) { list.innerHTML = `<p class="text-xs text-center text-gray-500">No hay anuncios</p>`; return; }
+            if (error) { list.innerHTML = `<div class="text-xs py-4 glass rounded-xl text-center">Error</div>`; return; }
+            if (!data || data.length === 0) { list.innerHTML = `<div class="text-xs py-10 glass rounded-2xl text-center">No hay anuncios</div>`; return; }
 
             data.forEach(ad => {
-                const card = document.createElement('div');
-                card.className = "glass p-4 rounded-3xl flex items-center justify-between border-white/5 active:scale-95 transition-all";
-                card.style = `border-left: 4px solid ${ad.color}`;
-                card.innerHTML = `
-                    <div class="flex items-center gap-4 truncate flex-1">
-                        <div class="w-12 h-12 rounded-2xl bg-black/30 flex items-center justify-center text-xl border border-white/10 shrink-0">
-                            ${ad.tipo === 'video' ? '📽️' : '🖼️'}
+                const icon = ad.tipo === 'video' ? '📽️' : '🖼️';
+                const style = `border-color: ${ad.color}40; background-color: ${ad.color}10;`;
+                list.innerHTML += `
+                    <div class="glass p-4 rounded-3xl flex items-center justify-between border-white/5 active:scale-95 transition-all" style="${style}">
+                        <div onclick="cargarParaEditar(${JSON.stringify(ad).replace(/"/g, '&quot;')})" class="flex items-center gap-4 truncate flex-1 cursor-pointer">
+                            <div class="w-12 h-12 rounded-2xl bg-black/30 flex items-center justify-center text-xl border border-white/10">
+                                ${icon}
+                            </div>
+                            <div class="truncate flex-1">
+                                <p class="text-xs font-800 uppercase tracking-tight text-white">${ad.titulo}</p>
+                                <p class="text-[9px] text-gray-400 truncate italic">${ad.subtitulo || ad.media.split('/').pop()}</p>
+                            </div>
                         </div>
-                        <div class="truncate">
-                            <p class="text-xs font-800 uppercase text-white truncate">${ad.titulo}</p>
-                            <p class="text-[9px] text-gray-400 italic truncate">${ad.subtitulo || 'Sin subtítulo'}</p>
-                        </div>
-                    </div>
-                    <button class="btn-del text-red-500 p-3 ml-2 active:scale-75 bg-red-950/30 rounded-full border border-red-500/20">🗑️</button>
-                `;
-                
-                // Hacer el área de la tarjeta editable al clic (Seguro para móviles)
-                card.querySelector('.flex.items-center.gap-4').onclick = () => cargarParaEditar(ad);
-                
-                // Borrar anuncio
-                card.querySelector('.btn-del').onclick = (e) => {
-                    e.stopPropagation();
-                    borrar(ad.id);
-                };
-
-                list.appendChild(card);
+                        <button onclick="borrar(${ad.id})" class="text-red-500 p-3 ml-2 active:scale-75 transition-all bg-red-950/30 rounded-full border border-red-500/20">🗑️</button>
+                    </div>`;
             });
         }
 
+        // CARGAR DATOS EN EL PANEL PARA EDITAR
         function cargarParaEditar(ad) {
             modoEdicion = true;
             document.getElementById('panel-creacion').classList.add('glow-active');
             document.getElementById('panel-title').innerText = "Editando Anuncio";
             document.getElementById('btn-cancelar-edicion').classList.remove('hidden');
             
+            // Llenar campos
             document.getElementById('edit-id').value = ad.id;
-            document.getElementById('tit').value = ad.titulo;
-            document.getElementById('sub').value = ad.subtitulo || "";
-            document.getElementById('lin').value = ad.link || "";
+            inTit.value = ad.titulo;
+            inSub.value = ad.subtitulo || "";
+            inLin.value = ad.link;
             document.getElementById('med').value = ad.media;
             document.getElementById('tip').value = ad.tipo;
             document.getElementById('col').value = ad.color;
-            document.getElementById('fon').value = ad.fuente;
-            document.getElementById('bkg').value = ad.fondo;
+            document.getElementById('fon').value = ad.fuente || 'font-moderno';
+            document.getElementById('bkg').value = ad.fondo || 'bg-cosmico';
             
+            // Preview de subida (como ya está subido, solo mostramos info)
+            const info = document.getElementById('file-info');
+            info.innerText = `✅ ARCHIVO CARGADO`;
+            info.classList.add('text-blue-400');
+            document.getElementById('file-label').style.borderColor = "#3b82f6";
+
+            // Cambiar textos del botón principal
             document.getElementById('btn-icon').innerText = "💾";
             document.getElementById('btn-text').innerText = "GUARDAR CAMBIOS";
 
             actualizarQR();
-            window.scrollTo({ top: 0, behavior: 'smooth' });
+            window.scrollTo({ top: 0, behavior: 'smooth' }); // Subir suavemente
         }
 
+        // CANCELAR EDICIÓN Y VOLVER A MODO CREAR
         function cancelarEdicion() {
             modoEdicion = false;
             document.getElementById('panel-creacion').classList.remove('glow-active');
             document.getElementById('panel-title').innerText = "Crear Nuevo Anuncio";
             document.getElementById('btn-cancelar-edicion').classList.add('hidden');
+            
+            // Limpiar campos
             document.getElementById('edit-id').value = "";
-            document.getElementById('tit').value = ""; 
-            document.getElementById('sub').value = ""; 
-            document.getElementById('lin').value = "";
+            document.getElementById('panel-creacion').querySelectorAll('input[type="text"]').forEach(i => i.value = "");
             document.getElementById('med').value = "";
-            document.getElementById('file-info').innerText = "Video o Foto";
+            document.getElementById('tip').value = "image";
+            document.getElementById('col').value = "#3b82f6";
+            document.getElementById('fon').value = "font-moderno";
+            document.getElementById('bkg').value = "bg-cosmico";
+            
+            // Reset Label subida
+            const info = document.getElementById('file-info');
+            info.innerText = "Video o Foto";
+            info.classList.remove('text-blue-400');
+            document.getElementById('file-label').style.borderColor = "rgba(255, 255, 255, 0.1)";
+            document.getElementById('file-preview-mic').classList.add('hidden');
+
+            // Reset botón principal
             document.getElementById('btn-icon').innerText = "🚀";
             document.getElementById('btn-text').innerText = "LANZAR A LA TV";
+
             actualizarQR();
         }
 
+        // BORRAR ANUNCIO
         async function borrar(id) { 
-            if(confirm("¿Eliminar anuncio de la TV?")) { 
-                await _supabase.from('anuncios').delete().eq('id', id); 
-                cargarAnuncios();
+            if(confirm("¿Quitar este anuncio de la TV?")) { 
+                const { error } = await _supabase.from('anuncios').delete().eq('id', id); 
+                if(!error) { if(modoEdicion && document.getElementById('edit-id').value == id) cancelarEdicion(); cargarAnuncios(); } 
+                else alert("Error al borrar: " + error.message);
             } 
         }
     </script>
