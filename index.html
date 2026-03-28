@@ -3,145 +3,195 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AZELERA PREMIUM ADS</title>
+    <title>AZELERA ADMIN ADS</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    <!-- Librería para el QR -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;500;800&display=swap');
-        body { font-family: 'Plus Jakarta Sans', sans-serif; background: #050505; color: white; overflow-x: hidden; }
+        body { font-family: 'Plus Jakarta Sans', sans-serif; background: #050505; color: white; }
         .glass { background: rgba(255, 255, 255, 0.03); backdrop-filter: blur(15px); border: 1px solid rgba(255, 255, 255, 0.1); }
-        .qr-container { background: white; padding: 10px; border-radius: 15px; box-shadow: 0 0 30px rgba(59, 130, 246, 0.5); }
-        canvas, img { max-width: 100%; border-radius: 8px; }
-        .premium-gradient { background: linear-gradient(135deg, #1e1e1e 0%, #000000 100%); }
+        input, select { background: rgba(255,255,255,0.05) !important; border: 1px solid rgba(255,255,255,0.1) !important; color: white !important; }
+        .btn-premium { background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%); transition: all 0.3s; }
+        .btn-premium:active { scale: 0.95; }
     </style>
 </head>
-<body class="p-4 mb-20">
+<body class="p-4 pb-24">
 
     <!-- CABECERA -->
-    <div class="flex justify-between items-center mb-8">
+    <div class="flex justify-between items-center mb-6">
         <div>
             <h1 class="text-2xl font-800 tracking-tighter text-blue-500">AZELERA<span class="text-white">ADS</span></h1>
-            <p class="text-[10px] text-gray-500 uppercase tracking-widest font-bold">Premium Display System</p>
+            <p class="text-[10px] text-gray-500 uppercase tracking-widest font-bold font-mono">Control Panel v3.0</p>
         </div>
-        <div class="w-2 h-2 rounded-full bg-green-500 shadow-[0_0_10px_#22c55e] animate-pulse"></div>
+        <div class="w-3 h-3 rounded-full bg-green-500 shadow-[0_0_15px_#22c55e] animate-pulse"></div>
     </div>
 
-    <!-- PANEL DE SUBIDA (MODO CELULAR) -->
-    <div class="glass p-6 rounded-[2rem] space-y-4 mb-8">
-        <div class="space-y-2">
-            <input type="text" id="tit" placeholder="Título del Anuncio (Ej: Promo Pizza)" class="w-full bg-white/5 border-none p-4 rounded-2xl text-sm focus:ring-2 ring-blue-500 outline-none">
-            <input type="text" id="lin" placeholder="Link (WhatsApp o Web para el QR)" class="w-full bg-white/5 border-none p-4 rounded-2xl text-sm focus:ring-2 ring-blue-500 outline-none">
+    <!-- FORMULARIO PRINCIPAL -->
+    <div class="glass p-5 rounded-[2.5rem] space-y-5">
+        
+        <!-- SECCIÓN TEXTOS -->
+        <div class="space-y-3">
+            <p class="text-[10px] font-bold text-blue-400 uppercase ml-2">Información del Anuncio</p>
+            <input type="text" id="emp" placeholder="Nombre de la Empresa" class="w-full p-4 rounded-2xl text-sm outline-none">
+            <input type="text" id="tit" placeholder="Título Principal" class="w-full p-4 rounded-2xl text-sm outline-none">
+            <input type="text" id="sub" placeholder="Subtítulo / Promo" class="w-full p-4 rounded-2xl text-sm outline-none">
+            <input type="text" id="lin" placeholder="Link QR (WhatsApp/Web)" class="w-full p-4 rounded-2xl text-sm outline-none">
         </div>
 
-        <label for="file-upload" id="file-label" class="flex flex-col items-center justify-center border-2 border-dashed border-white/10 rounded-[2rem] p-8 transition-all active:scale-95 cursor-pointer">
-            <span class="text-3xl mb-2">🎬</span>
-            <span id="file-info" class="text-[11px] font-bold text-gray-400 uppercase">Toca para subir Video o Foto</span>
-            <input type="file" id="file-upload" class="hidden" accept="image/*,video/*">
-        </label>
+        <!-- SECCIÓN ESTILO -->
+        <div class="space-y-3">
+            <p class="text-[10px] font-bold text-blue-400 uppercase ml-2">Diseño y Estética</p>
+            <div class="grid grid-cols-2 gap-3">
+                <select id="fnt" class="p-4 rounded-2xl text-xs outline-none">
+                    <option value="moderno">Fuente: Moderna</option>
+                    <option value="impacto">Fuente: Impacto</option>
+                    <option value="elegante">Fuente: Elegante</option>
+                </select>
+                <select id="bgc" class="p-4 rounded-2xl text-xs outline-none">
+                    <option value="bg-cosmico">Fondo: Cósmico</option>
+                    <option value="bg-aurora">Fondo: Aurora</option>
+                    <option value="bg-nebulosa">Fondo: Nebulosa</option>
+                    <option value="bg-minimal">Fondo: Negro</option>
+                </select>
+            </div>
+            <div class="grid grid-cols-2 gap-3">
+                <select id="tex" class="p-4 rounded-2xl text-xs outline-none">
+                    <option value="none">Sin Textura</option>
+                    <option value="grain">Grano Vintage</option>
+                    <option value="lines">Líneas Tech</option>
+                </select>
+                <div class="flex items-center gap-2 glass p-2 rounded-2xl">
+                    <span class="text-[10px] ml-2">Color Texto:</span>
+                    <input type="color" id="clr" value="#FFFFFF" class="flex-1 h-8 rounded-lg cursor-pointer">
+                </div>
+            </div>
+        </div>
 
-        <!-- VALORES OCULTOS -->
-        <input type="hidden" id="med">
-        <input type="hidden" id="tip" value="image">
-        <input type="hidden" id="sub" value="">
-        <input type="hidden" id="col" value="#3b82f6">
+        <!-- SECCIÓN ARCHIVOS -->
+        <div class="grid grid-cols-2 gap-4">
+            <label class="flex flex-col items-center justify-center border-2 border-dashed border-white/10 rounded-3xl p-4 active:bg-white/5">
+                <span class="text-2xl mb-1">🎬</span>
+                <span id="txt-ad" class="text-[9px] font-bold uppercase text-gray-400">Anuncio</span>
+                <input type="file" id="file-ad" class="hidden" accept="image/*,video/*">
+            </label>
+            <label class="flex flex-col items-center justify-center border-2 border-dashed border-white/10 rounded-3xl p-4 active:bg-white/5">
+                <span class="text-2xl mb-1">🏢</span>
+                <span id="txt-logo" class="text-[9px] font-bold uppercase text-gray-400">Logo</span>
+                <input type="file" id="file-logo" class="hidden" accept="image/*">
+            </label>
+        </div>
 
-        <button onclick="guardar()" class="w-full bg-blue-600 hover:bg-blue-500 text-white font-800 py-4 rounded-2xl shadow-lg shadow-blue-900/20 transition-all active:scale-95 uppercase text-xs tracking-widest">
+        <!-- CAMPOS OCULTOS PARA URLS -->
+        <input type="hidden" id="med_url">
+        <input type="hidden" id="logo_url">
+        <input type="hidden" id="tipo_media">
+
+        <button onclick="guardar()" id="btn-main" class="w-full btn-premium text-white font-800 py-5 rounded-[2rem] shadow-xl text-xs tracking-widest uppercase">
             🚀 LANZAR A LA TV
         </button>
     </div>
 
-    <!-- LISTA DE ANUNCIOS -->
-    <h2 class="text-[10px] font-bold text-gray-500 mb-4 tracking-[0.3em] uppercase ml-2">Anuncios en Pantalla</h2>
-    <div id="lista-anuncios" class="grid gap-4">
-        <!-- Se cargan dinámicamente -->
+    <!-- LISTADO -->
+    <div class="mt-8">
+        <h2 class="text-[10px] font-bold text-gray-500 mb-4 tracking-[0.3em] uppercase ml-4">Gestionar Pantalla</h2>
+        <div id="lista-anuncios" class="space-y-3"></div>
     </div>
 
     <script>
+        // --- CONFIGURACIÓN (REEMPLAZA CON TUS DATOS) ---
         const supabaseUrl = 'https://vasfdurinslsoprkvusm.supabase.co';
         const supabaseKey = 'sb_publishable_KpDcdMU8_qJaeztUIhTxFg_DRvLUOQk';
         const _supabase = supabase.createClient(supabaseUrl, supabaseKey);
 
-        // SUBIR ARCHIVO
-        document.getElementById('file-upload').addEventListener('change', async (e) => {
-            const file = e.target.files[0];
-            if (!file) return;
+        // --- SUBIDA DE ARCHIVOS ---
+        async function upload(file, type) {
+            const label = type === 'ad' ? document.getElementById('txt-ad') : document.getElementById('txt-logo');
+            label.innerText = "CARGANDO...";
             
-            const label = document.getElementById('file-label');
-            const info = document.getElementById('file-info');
-            info.innerText = "PROCESANDO... ⏳";
+            const fileExt = file.name.split('.').pop();
+            const fileName = `${Date.now()}.${fileExt}`;
+            const folder = type === 'ad' ? 'media' : 'logos';
 
-            const ext = file.name.split('.').pop();
-            const fileName = `${Date.now()}.${ext}`;
-
-            const { data, error } = await _supabase.storage
-                .from('anuncios') // Asegúrate que el bucket se llame así
-                .upload(fileName, file);
+            const { data, error } = await _supabase.storage.from('anuncios').upload(`${folder}/${fileName}`, file);
             
             if (data) {
-                const { data: urlData } = _supabase.storage.from('anuncios').getPublicUrl(fileName);
-                document.getElementById('med').value = urlData.publicUrl; 
-                info.innerText = "✅ ARCHIVO CARGADO";
-                label.style.borderColor = "#3b82f6";
-                document.getElementById('tip').value = file.type.includes('video') ? 'video' : 'image';
-            } else {
-                alert("Error: " + error.message);
-                info.innerText = "❌ ERROR";
-            }
-        });
-
-        // GUARDAR EN BD
-        async function guardar() {
-            const mediaUrl = document.getElementById('med').value;
-            if(!mediaUrl) return alert("Sube un archivo primero");
-
-            const { error } = await _supabase.from('anuncios').insert([{
-                titulo: document.getElementById('tit').value || "PROMOCIÓN",
-                media: mediaUrl,
-                link: document.getElementById('lin').value || "https://azelera.com",
-                tipo: document.getElementById('tip').value,
-                activo: true
-            }]);
-
-            if(!error) {
-                alert("¡ENVIADO A TV!");
-                location.reload();
+                const { data: url } = _supabase.storage.from('anuncios').getPublicUrl(`${folder}/${fileName}`);
+                label.innerText = "LISTO ✅";
+                if(type === 'ad') {
+                    document.getElementById('med_url').value = url.publicUrl;
+                    document.getElementById('tipo_media').value = file.type.includes('video') ? 'video' : 'image';
+                } else {
+                    document.getElementById('logo_url').value = url.publicUrl;
+                }
             }
         }
 
-        // CARGAR LISTA
-        async function cargarAnuncios() {
+        document.getElementById('file-ad').onchange = (e) => upload(e.target.files[0], 'ad');
+        document.getElementById('file-logo').onchange = (e) => upload(e.target.files[0], 'logo');
+
+        // --- GUARDAR EN BASE DE DATOS ---
+        async function guardar() {
+            const btn = document.getElementById('btn-main');
+            const media = document.getElementById('med_url').value;
+            if(!media) return alert("Sube un video o imagen del anuncio");
+
+            btn.innerText = "SINCRONIZANDO...";
+            btn.disabled = true;
+
+            const payload = {
+                empresa: document.getElementById('emp').value,
+                titulo: document.getElementById('tit').value,
+                subtitulo: document.getElementById('sub').value,
+                link: document.getElementById('lin').value,
+                font_family: document.getElementById('fnt').value,
+                bg_color: document.getElementById('bgc').value,
+                texture: document.getElementById('tex').value,
+                color: document.getElementById('clr').value,
+                media: media,
+                logo: document.getElementById('logo_url').value,
+                tipo: document.getElementById('tipo_media').value,
+                activo: true
+            };
+
+            const { error } = await _supabase.from('anuncios').insert([payload]);
+
+            if(!error) {
+                btn.innerText = "¡EN PANTALLA! 🎉";
+                setTimeout(() => location.reload(), 1500);
+            } else {
+                alert("Error: " + error.message);
+                btn.disabled = false;
+            }
+        }
+
+        // --- CARGAR LISTA ---
+        async function cargar() {
             const { data } = await _supabase.from('anuncios').select('*').order('id', { ascending: false });
             const list = document.getElementById('lista-anuncios');
-            list.innerHTML = "";
             if(data) {
-                data.forEach(ad => {
-                    list.innerHTML += `
-                        <div class="glass p-4 rounded-3xl flex items-center justify-between border-white/5">
-                            <div class="flex items-center gap-4 truncate">
-                                <div class="w-12 h-12 rounded-xl bg-blue-600/20 flex items-center justify-center text-xl">
-                                    ${ad.tipo === 'video' ? '📽️' : '🖼️'}
-                                </div>
-                                <div class="truncate">
-                                    <p class="text-xs font-800 uppercase tracking-tight">${ad.titulo}</p>
-                                    <p class="text-[9px] text-gray-500 truncate">${ad.link}</p>
-                                </div>
+                list.innerHTML = data.map(ad => `
+                    <div class="glass p-4 rounded-[2rem] flex items-center justify-between">
+                        <div class="flex items-center gap-4 truncate">
+                            <img src="${ad.media}" class="w-12 h-12 rounded-xl object-cover bg-gray-800">
+                            <div class="truncate">
+                                <p class="text-[11px] font-800 uppercase">${ad.titulo || 'Sin título'}</p>
+                                <p class="text-[9px] text-gray-500">${ad.empresa || 'Empresa'}</p>
                             </div>
-                            <button onclick="borrar(${ad.id})" class="text-red-500 p-2">🗑️</button>
-                        </div>`;
-                });
+                        </div>
+                        <button onclick="borrar(${ad.id})" class="p-3 text-red-500 text-xl active:scale-75 transition-all">🗑️</button>
+                    </div>
+                `).join('');
             }
         }
 
         async function borrar(id) {
-            if(confirm("¿Quitar de la pantalla?")) {
+            if(confirm("¿Quitar de la TV?")) {
                 await _supabase.from('anuncios').delete().eq('id', id);
-                cargarAnuncios();
+                cargar();
             }
         }
 
-        cargarAnuncios();
+        cargar();
     </script>
 </body>
 </html>
