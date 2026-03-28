@@ -13,13 +13,15 @@
 </head>
 <body class="p-4 md:p-10">
     <div class="max-w-4xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-8">
+        <!-- FORMULARIO -->
         <div id="form-card" class="glass p-8 rounded-[2.5rem] shadow-2xl self-start sticky top-10">
             <h1 id="form-title" class="text-2xl font-black italic text-blue-500 mb-6 uppercase text-center">Nuevo Anuncio</h1>
             <input type="hidden" id="edit-id">
             <div class="space-y-4">
-                <input id="tit" type="text" placeholder="Nombre del Negocio" class="w-full p-4 rounded-2xl text-sm">
-                <input id="med" type="text" placeholder="TÍTULO PRINCIPAL" class="w-full p-4 rounded-2xl text-sm font-black">
-                <textarea id="sub" placeholder="Cuerpo del mensaje (Subtítulo)" class="w-full p-4 rounded-2xl h-20 text-sm italic"></textarea>
+                <input id="tit" type="text" placeholder="Nombre del Negocio (ej: PIZZA HOUSE)" class="w-full p-4 rounded-2xl text-sm">
+                <input id="med" type="text" placeholder="TÍTULO GANCHO (ej: 2X1 HOY)" class="w-full p-4 rounded-2xl text-sm font-black uppercase">
+                <textarea id="sub" placeholder="Cuerpo del mensaje (Detalles del anuncio)" class="w-full p-4 rounded-2xl h-20 text-sm italic"></textarea>
+                
                 <div class="grid grid-cols-2 gap-3">
                     <select id="tip" class="p-4 rounded-2xl text-xs font-bold uppercase">
                         <option value="texto">📝 Texto + QR</option>
@@ -30,6 +32,7 @@
                         <input id="col" type="color" value="#1e3a8a" class="flex-1 h-10 cursor-pointer bg-transparent border-none">
                     </div>
                 </div>
+
                 <div class="grid grid-cols-2 gap-3">
                     <select id="tex" class="p-4 rounded-2xl text-[10px] font-bold uppercase">
                         <option value="degradado">✨ Efecto Vivo</option>
@@ -40,31 +43,33 @@
                         <option value="font-serif italic">Letra Elegante</option>
                     </select>
                 </div>
-                <input id="lin" type="text" placeholder="Link WhatsApp" class="w-full p-4 rounded-2xl text-sm">
+
+                <input id="lin" type="text" placeholder="Link WhatsApp (Para el QR)" class="w-full p-4 rounded-2xl text-sm">
+
                 <div class="flex gap-2 pt-4">
-                    <button onclick="guardar()" id="btn-save" class="flex-1 bg-blue-600 py-5 rounded-[2rem] font-black uppercase tracking-widest">Lanzar Anuncio</button>
+                    <button onclick="guardar()" id="btn-save" class="flex-1 bg-blue-600 py-5 rounded-[2rem] font-black uppercase tracking-widest active:scale-95 transition-all">Lanzar Anuncio</button>
                     <button id="btn-cancel" onclick="resetForm()" class="hidden bg-slate-800 px-6 rounded-[2rem] text-white font-bold">X</button>
                 </div>
             </div>
         </div>
 
+        <!-- LISTADO -->
         <div class="glass p-8 rounded-[2.5rem]">
-            <h2 class="text-xl font-black mb-6 uppercase text-slate-400">Carrusel Activo</h2>
+            <h2 class="text-xl font-black mb-6 uppercase text-slate-400">Panel Activo</h2>
             <div id="lista-anuncios" class="space-y-4">
-                <p class="text-xs text-slate-500 italic">Conectando a Postgres...</p>
+                <p class="text-xs text-slate-500 italic">Cargando anuncios de Postgres...</p>
             </div>
         </div>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script>
-        // Configuración de Supabase (Sustituye con tus llaves del dashboard de Supabase si es necesario)
         const supabaseUrl = 'https://vasfdurinslsoprkvusm.supabase.co';
-        const supabaseKey = 'TU_SUPABASE_ANON_KEY'; // Debes poner tu clave anon de Supabase aquí
+        const supabaseKey = 'sb_publishable_KpDcdMU8_qJaeztUIhTxFg_DRvLUOQk';
         const _supabase = supabase.createClient(supabaseUrl, supabaseKey);
 
         async function cargarAnuncios() {
-            const { data, error } = await _supabase.from('anuncios').select('*').order('id', { ascending: false });
+            const { data } = await _supabase.from('anuncios').select('*').order('id', { ascending: false });
             const list = document.getElementById('lista-anuncios');
             list.innerHTML = "";
             if (data) {
@@ -95,21 +100,17 @@
                 color: document.getElementById('col').value,
                 textura: document.getElementById('tex').value,
                 fuente: document.getElementById('fnt').value,
-                link: document.getElementById('lin').value,
+                link: document.getElementById('lin').value || "https://wa.me/593",
                 activo: true
             };
 
-            if (id) {
-                await _supabase.from('anuncios').update(payload).eq('id', id);
-            } else {
-                await _supabase.from('anuncios').insert([payload]);
-            }
-            resetForm();
-            cargarAnuncios();
+            if (id) { await _supabase.from('anuncios').update(payload).eq('id', id); }
+            else { await _supabase.from('anuncios').insert([payload]); }
+            resetForm(); cargarAnuncios();
         }
 
         async function borrar(id) {
-            if (confirm("¿Eliminar?")) {
+            if (confirm("¿Eliminar anuncio?")) {
                 await _supabase.from('anuncios').delete().eq('id', id);
                 cargarAnuncios();
             }
@@ -127,6 +128,7 @@
             document.getElementById('lin').value = ad.link;
             document.getElementById('btn-save').innerText = "Guardar Cambios";
             document.getElementById('btn-cancel').classList.remove('hidden');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
         function resetForm() {
