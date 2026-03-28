@@ -3,195 +3,126 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AZELERA ADMIN ADS</title>
+    <title>AZELERA TV - AUDIO ON</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;500;800&display=swap');
-        body { font-family: 'Plus Jakarta Sans', sans-serif; background: #050505; color: white; }
-        .glass { background: rgba(255, 255, 255, 0.03); backdrop-filter: blur(15px); border: 1px solid rgba(255, 255, 255, 0.1); }
-        input, select { background: rgba(255,255,255,0.05) !important; border: 1px solid rgba(255,255,255,0.1) !important; color: white !important; }
-        .btn-premium { background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%); transition: all 0.3s; }
-        .btn-premium:active { scale: 0.95; }
+        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@700;800&family=Oswald:wght@700&family=Playfair+Display:ital,wght@1,900&family=Bebas+Neue&display=swap');
+        
+        body, html { margin: 0; padding: 0; width: 100%; height: 100%; overflow: hidden; background: #000; color: white; }
+        .split-container { display: flex; width: 100%; height: 100%; flex-direction: row; }
+        
+        #media-panel { width: 65%; height: 100%; background: #000; overflow: hidden; display: flex; justify-content: center; align-items: center; }
+        .media-content { width: 100%; height: 100%; object-fit: cover; animation: fadeIn 1s ease-in; }
+
+        #info-panel { width: 35%; height: 100%; display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 40px; box-sizing: border-box; transition: all 1s ease; box-shadow: -10px 0 50px rgba(0,0,0,0.5); z-index: 10; }
+
+        #ad-titulo { font-size: 60px; line-height: 1.1; font-weight: 800; text-align: center; margin-bottom: 20px; }
+        #ad-subtitulo { font-size: 26px; font-weight: 500; opacity: 0.9; text-align: center; margin-bottom: 40px; }
+
+        .font-moderno { font-family: 'Plus Jakarta Sans', sans-serif; }
+        .font-impacto { font-family: 'Bebas Neue', sans-serif; font-size: 85px !important; letter-spacing: 2px; }
+        .font-elegante { font-family: 'Playfair Display', serif; font-style: italic; font-size: 65px !important; }
+
+        .qr-wrapper { background: white; padding: 25px; border-radius: 40px; box-shadow: 0 15px 40px rgba(0,0,0,0.4); transform: scale(1.1); }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
     </style>
 </head>
-<body class="p-4 pb-24">
+<body>
 
-    <!-- CABECERA -->
-    <div class="flex justify-between items-center mb-6">
-        <div>
-            <h1 class="text-2xl font-800 tracking-tighter text-blue-500">AZELERA<span class="text-white">ADS</span></h1>
-            <p class="text-[10px] text-gray-500 uppercase tracking-widest font-bold font-mono">Control Panel v3.0</p>
-        </div>
-        <div class="w-3 h-3 rounded-full bg-green-500 shadow-[0_0_15px_#22c55e] animate-pulse"></div>
-    </div>
-
-    <!-- FORMULARIO PRINCIPAL -->
-    <div class="glass p-5 rounded-[2.5rem] space-y-5">
-        
-        <!-- SECCIÓN TEXTOS -->
-        <div class="space-y-3">
-            <p class="text-[10px] font-bold text-blue-400 uppercase ml-2">Información del Anuncio</p>
-            <input type="text" id="emp" placeholder="Nombre de la Empresa" class="w-full p-4 rounded-2xl text-sm outline-none">
-            <input type="text" id="tit" placeholder="Título Principal" class="w-full p-4 rounded-2xl text-sm outline-none">
-            <input type="text" id="sub" placeholder="Subtítulo / Promo" class="w-full p-4 rounded-2xl text-sm outline-none">
-            <input type="text" id="lin" placeholder="Link QR (WhatsApp/Web)" class="w-full p-4 rounded-2xl text-sm outline-none">
+    <div class="split-container">
+        <div id="media-panel">
+            <div id="media-container" class="w-full h-full"></div>
         </div>
 
-        <!-- SECCIÓN ESTILO -->
-        <div class="space-y-3">
-            <p class="text-[10px] font-bold text-blue-400 uppercase ml-2">Diseño y Estética</p>
-            <div class="grid grid-cols-2 gap-3">
-                <select id="fnt" class="p-4 rounded-2xl text-xs outline-none">
-                    <option value="moderno">Fuente: Moderna</option>
-                    <option value="impacto">Fuente: Impacto</option>
-                    <option value="elegante">Fuente: Elegante</option>
-                </select>
-                <select id="bgc" class="p-4 rounded-2xl text-xs outline-none">
-                    <option value="bg-cosmico">Fondo: Cósmico</option>
-                    <option value="bg-aurora">Fondo: Aurora</option>
-                    <option value="bg-nebulosa">Fondo: Nebulosa</option>
-                    <option value="bg-minimal">Fondo: Negro</option>
-                </select>
-            </div>
-            <div class="grid grid-cols-2 gap-3">
-                <select id="tex" class="p-4 rounded-2xl text-xs outline-none">
-                    <option value="none">Sin Textura</option>
-                    <option value="grain">Grano Vintage</option>
-                    <option value="lines">Líneas Tech</option>
-                </select>
-                <div class="flex items-center gap-2 glass p-2 rounded-2xl">
-                    <span class="text-[10px] ml-2">Color Texto:</span>
-                    <input type="color" id="clr" value="#FFFFFF" class="flex-1 h-8 rounded-lg cursor-pointer">
-                </div>
+        <div id="info-panel">
+            <h1 id="ad-titulo" class="font-moderno">PROMOCIÓN</h1>
+            <p id="ad-subtitulo">Escanea para más información</p>
+            <div class="qr-wrapper">
+                <div id="qrcode-tv"></div>
             </div>
         </div>
-
-        <!-- SECCIÓN ARCHIVOS -->
-        <div class="grid grid-cols-2 gap-4">
-            <label class="flex flex-col items-center justify-center border-2 border-dashed border-white/10 rounded-3xl p-4 active:bg-white/5">
-                <span class="text-2xl mb-1">🎬</span>
-                <span id="txt-ad" class="text-[9px] font-bold uppercase text-gray-400">Anuncio</span>
-                <input type="file" id="file-ad" class="hidden" accept="image/*,video/*">
-            </label>
-            <label class="flex flex-col items-center justify-center border-2 border-dashed border-white/10 rounded-3xl p-4 active:bg-white/5">
-                <span class="text-2xl mb-1">🏢</span>
-                <span id="txt-logo" class="text-[9px] font-bold uppercase text-gray-400">Logo</span>
-                <input type="file" id="file-logo" class="hidden" accept="image/*">
-            </label>
-        </div>
-
-        <!-- CAMPOS OCULTOS PARA URLS -->
-        <input type="hidden" id="med_url">
-        <input type="hidden" id="logo_url">
-        <input type="hidden" id="tipo_media">
-
-        <button onclick="guardar()" id="btn-main" class="w-full btn-premium text-white font-800 py-5 rounded-[2rem] shadow-xl text-xs tracking-widest uppercase">
-            🚀 LANZAR A LA TV
-        </button>
-    </div>
-
-    <!-- LISTADO -->
-    <div class="mt-8">
-        <h2 class="text-[10px] font-bold text-gray-500 mb-4 tracking-[0.3em] uppercase ml-4">Gestionar Pantalla</h2>
-        <div id="lista-anuncios" class="space-y-3"></div>
     </div>
 
     <script>
-        // --- CONFIGURACIÓN (REEMPLAZA CON TUS DATOS) ---
         const supabaseUrl = 'https://vasfdurinslsoprkvusm.supabase.co';
         const supabaseKey = 'sb_publishable_KpDcdMU8_qJaeztUIhTxFg_DRvLUOQk';
         const _supabase = supabase.createClient(supabaseUrl, supabaseKey);
 
-        // --- SUBIDA DE ARCHIVOS ---
-        async function upload(file, type) {
-            const label = type === 'ad' ? document.getElementById('txt-ad') : document.getElementById('txt-logo');
-            label.innerText = "CARGANDO...";
-            
-            const fileExt = file.name.split('.').pop();
-            const fileName = `${Date.now()}.${fileExt}`;
-            const folder = type === 'ad' ? 'media' : 'logos';
+        let ads = [];
+        let currentIndex = 0;
+        let qrTv;
 
-            const { data, error } = await _supabase.storage.from('anuncios').upload(`${folder}/${fileName}`, file);
-            
-            if (data) {
-                const { data: url } = _supabase.storage.from('anuncios').getPublicUrl(`${folder}/${fileName}`);
-                label.innerText = "LISTO ✅";
-                if(type === 'ad') {
-                    document.getElementById('med_url').value = url.publicUrl;
-                    document.getElementById('tipo_media').value = file.type.includes('video') ? 'video' : 'image';
-                } else {
-                    document.getElementById('logo_url').value = url.publicUrl;
-                }
-            }
-        }
+        window.addEventListener('load', () => {
+            qrTv = new QRCode(document.getElementById("qrcode-tv"), {
+                text: "https://azelera.com",
+                width: 250, height: 250, colorDark : "#000000", colorLight : "#ffffff", correctLevel : QRCode.CorrectLevel.H
+            });
+            iniciarApp();
+        });
 
-        document.getElementById('file-ad').onchange = (e) => upload(e.target.files[0], 'ad');
-        document.getElementById('file-logo').onchange = (e) => upload(e.target.files[0], 'logo');
-
-        // --- GUARDAR EN BASE DE DATOS ---
-        async function guardar() {
-            const btn = document.getElementById('btn-main');
-            const media = document.getElementById('med_url').value;
-            if(!media) return alert("Sube un video o imagen del anuncio");
-
-            btn.innerText = "SINCRONIZANDO...";
-            btn.disabled = true;
-
-            const payload = {
-                empresa: document.getElementById('emp').value,
-                titulo: document.getElementById('tit').value,
-                subtitulo: document.getElementById('sub').value,
-                link: document.getElementById('lin').value,
-                font_family: document.getElementById('fnt').value,
-                bg_color: document.getElementById('bgc').value,
-                texture: document.getElementById('tex').value,
-                color: document.getElementById('clr').value,
-                media: media,
-                logo: document.getElementById('logo_url').value,
-                tipo: document.getElementById('tipo_media').value,
-                activo: true
-            };
-
-            const { error } = await _supabase.from('anuncios').insert([payload]);
-
-            if(!error) {
-                btn.innerText = "¡EN PANTALLA! 🎉";
-                setTimeout(() => location.reload(), 1500);
+        async function iniciarApp() {
+            const { data } = await _supabase.from('anuncios').select('*').eq('activo', true).order('id', { ascending: false });
+            if (data && data.length > 0) {
+                ads = data;
+                mostrarSiguiente();
             } else {
-                alert("Error: " + error.message);
-                btn.disabled = false;
+                setTimeout(iniciarApp, 5000);
             }
         }
 
-        // --- CARGAR LISTA ---
-        async function cargar() {
-            const { data } = await _supabase.from('anuncios').select('*').order('id', { ascending: false });
-            const list = document.getElementById('lista-anuncios');
-            if(data) {
-                list.innerHTML = data.map(ad => `
-                    <div class="glass p-4 rounded-[2rem] flex items-center justify-between">
-                        <div class="flex items-center gap-4 truncate">
-                            <img src="${ad.media}" class="w-12 h-12 rounded-xl object-cover bg-gray-800">
-                            <div class="truncate">
-                                <p class="text-[11px] font-800 uppercase">${ad.titulo || 'Sin título'}</p>
-                                <p class="text-[9px] text-gray-500">${ad.empresa || 'Empresa'}</p>
-                            </div>
-                        </div>
-                        <button onclick="borrar(${ad.id})" class="p-3 text-red-500 text-xl active:scale-75 transition-all">🗑️</button>
-                    </div>
-                `).join('');
+        function mostrarSiguiente() {
+            if (currentIndex >= ads.length) currentIndex = 0;
+            const ad = ads[currentIndex];
+
+            const infoPanel = document.getElementById('info-panel');
+            const mediaCont = document.getElementById('media-container');
+            const tit = document.getElementById('ad-titulo');
+            const sub = document.getElementById('ad-subtitulo');
+
+            infoPanel.style.backgroundColor = ad.bg_color || '#1e3a8a';
+            tit.innerText = ad.titulo;
+            sub.innerText = ad.subtitulo || "";
+            tit.style.color = ad.color || '#FFFFFF';
+            sub.style.color = ad.color || '#FFFFFF';
+            tit.className = 'font-' + (ad.font_family || 'moderno');
+
+            qrTv.makeCode(ad.link || "https://azelera.com");
+
+            mediaCont.innerHTML = "";
+            
+            if (ad.tipo === 'video') {
+                const video = document.createElement('video');
+                video.src = ad.media;
+                video.className = "media-content";
+                video.autoplay = true;
+                video.controls = false;
+                
+                // --- LÓGICA DE AUDIO ---
+                video.muted = false; // Intentamos que suene
+                
+                video.onended = () => { currentIndex++; iniciarApp(); };
+                mediaCont.appendChild(video);
+
+                // Intento de reproducción con audio
+                const playPromise = video.play();
+
+                if (playPromise !== undefined) {
+                    playPromise.catch(error => {
+                        console.log("Audio bloqueado. Muteando para auto-reproducir.");
+                        video.muted = true; // Si falla, lo muteamos para que al menos se vea
+                        video.play();
+                    });
+                }
+            } else {
+                const img = document.createElement('img');
+                img.src = ad.media;
+                img.className = "media-content";
+                mediaCont.appendChild(img);
+                setTimeout(() => { currentIndex++; iniciarApp(); }, 12000);
             }
         }
-
-        async function borrar(id) {
-            if(confirm("¿Quitar de la TV?")) {
-                await _supabase.from('anuncios').delete().eq('id', id);
-                cargar();
-            }
-        }
-
-        cargar();
     </script>
 </body>
 </html>
