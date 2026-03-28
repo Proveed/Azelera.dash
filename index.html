@@ -3,24 +3,53 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AZELERA ADS - CONTROL POSTGRES</title>
+    <title>AZELERA ADS - PANEL DE CONTROL</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         body { background-color: #020617; color: white; font-family: sans-serif; }
-        .glass { background: rgba(15, 23, 42, 0.9); border: 1px solid rgba(255, 255, 255, 0.1); backdrop-filter: blur(10px); }
-        input, textarea, select { background: rgba(0,0,0,0.5) !important; border: 1px solid rgba(255,255,255,0.1) !important; color: white !important; outline: none; }
+        .glass { background: rgba(15, 23, 42, 0.8); border: 1px solid rgba(255, 255, 255, 0.1); backdrop-filter: blur(12px); }
+        .metric-card { background: linear-gradient(145deg, rgba(30,58,138,0.3), rgba(0,0,0,0.5)); border: 1px solid rgba(59,130,246,0.1); }
+        input, textarea, select { background: rgba(255,255,255,0.05) !important; border: 1px solid rgba(255,255,255,0.1) !important; color: white !important; outline: none; }
     </style>
 </head>
-<body class="p-4 md:p-10">
-    <div class="max-w-4xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-8">
+<body class="p-4 md:p-8">
+    <!-- MÉTRICAS PROFESIONALES -->
+    <div class="max-w-6xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-4 mb-10">
+        <div class="metric-card p-6 rounded-[2rem] text-center">
+            <p class="text-[10px] uppercase font-bold text-blue-400 mb-1 tracking-widest">Impresiones</p>
+            <h3 id="m-vistas" class="text-3xl font-black">0</h3>
+        </div>
+        <div class="metric-card p-6 rounded-[2rem] text-center">
+            <p class="text-[10px] uppercase font-bold text-green-400 mb-1 tracking-widest">Clics (QR)</p>
+            <h3 id="m-clics" class="text-3xl font-black">0</h3>
+        </div>
+        <div class="metric-card p-6 rounded-[2rem] text-center">
+            <p class="text-[10px] uppercase font-bold text-purple-400 mb-1 tracking-widest">CTR %</p>
+            <h3 id="m-ctr" class="text-3xl font-black">0%</h3>
+        </div>
+        <div class="metric-card p-6 rounded-[2rem] text-center">
+            <p class="text-[10px] uppercase font-bold text-orange-400 mb-1 tracking-widest">Estado</p>
+            <h3 class="text-xl font-black text-green-500 uppercase italic">Activo</h3>
+        </div>
+    </div>
+
+    <div class="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-8">
         <!-- FORMULARIO -->
-        <div id="form-card" class="glass p-8 rounded-[2.5rem] shadow-2xl self-start sticky top-10">
-            <h1 id="form-title" class="text-2xl font-black italic text-blue-500 mb-6 uppercase text-center">Nuevo Anuncio</h1>
+        <div class="glass p-8 rounded-[3rem] shadow-2xl self-start sticky top-5">
+            <h1 id="form-title" class="text-2xl font-black italic text-blue-500 mb-6 uppercase text-center">Nueva Campaña</h1>
             <input type="hidden" id="edit-id">
             <div class="space-y-4">
-                <input id="tit" type="text" placeholder="Nombre del Negocio (ej: PIZZA HOUSE)" class="w-full p-4 rounded-2xl text-sm">
-                <input id="med" type="text" placeholder="TÍTULO GANCHO (ej: 2X1 HOY)" class="w-full p-4 rounded-2xl text-sm font-black uppercase">
-                <textarea id="sub" placeholder="Cuerpo del mensaje (Detalles del anuncio)" class="w-full p-4 rounded-2xl h-20 text-sm italic"></textarea>
+                <input id="tit" type="text" placeholder="Nombre Negocio (Ej: Burger King)" class="w-full p-4 rounded-2xl text-sm">
+                <input id="med" type="text" placeholder="TÍTULO IMPACTO (O URL de archivo)" class="w-full p-4 rounded-2xl text-sm font-black">
+                
+                <div class="relative">
+                    <input type="file" id="file-upload" class="hidden" accept="image/*,video/*">
+                    <label for="file-upload" class="flex items-center justify-center w-full p-4 rounded-2xl border-2 border-dashed border-blue-500/30 bg-blue-500/5 cursor-pointer text-[10px] font-bold uppercase text-blue-400">
+                        📁 Cargar Foto o Video
+                    </label>
+                </div>
+
+                <textarea id="sub" placeholder="Cuerpo del anuncio (Subtítulo)" class="w-full p-4 rounded-2xl h-24 text-sm italic"></textarea>
                 
                 <div class="grid grid-cols-2 gap-3">
                     <select id="tip" class="p-4 rounded-2xl text-xs font-bold uppercase">
@@ -28,37 +57,19 @@
                         <option value="image">📸 Imagen Full</option>
                         <option value="video">🎥 Video Full</option>
                     </select>
-                    <div class="flex items-center gap-3 p-2 glass rounded-2xl">
-                        <input id="col" type="color" value="#1e3a8a" class="flex-1 h-10 cursor-pointer bg-transparent border-none">
-                    </div>
+                    <input id="col" type="color" value="#1e3a8a" class="w-full h-14 rounded-2xl bg-transparent border-none">
                 </div>
 
-                <div class="grid grid-cols-2 gap-3">
-                    <select id="tex" class="p-4 rounded-2xl text-[10px] font-bold uppercase">
-                        <option value="degradado">✨ Efecto Vivo</option>
-                        <option value="solido">🎨 Color Liso</option>
-                    </select>
-                    <select id="fnt" class="p-4 rounded-2xl text-[10px] font-bold uppercase">
-                        <option value="font-black italic">Letra Impacto</option>
-                        <option value="font-serif italic">Letra Elegante</option>
-                    </select>
-                </div>
-
-                <input id="lin" type="text" placeholder="Link WhatsApp (Para el QR)" class="w-full p-4 rounded-2xl text-sm">
-
-                <div class="flex gap-2 pt-4">
-                    <button onclick="guardar()" id="btn-save" class="flex-1 bg-blue-600 py-5 rounded-[2rem] font-black uppercase tracking-widest active:scale-95 transition-all">Lanzar Anuncio</button>
-                    <button id="btn-cancel" onclick="resetForm()" class="hidden bg-slate-800 px-6 rounded-[2rem] text-white font-bold">X</button>
-                </div>
+                <input id="lin" type="text" placeholder="Link WhatsApp destino" class="w-full p-4 rounded-2xl text-sm">
+                <button onclick="guardar()" id="btn-save" class="w-full bg-blue-600 py-5 rounded-[2rem] font-black uppercase tracking-widest shadow-xl active:scale-95 transition-all">Publicar en Postgres</button>
+                <button id="btn-cancel" onclick="resetForm()" class="hidden w-full mt-2 bg-slate-800 py-3 rounded-[2rem] text-xs font-bold uppercase">Cancelar Edición</button>
             </div>
         </div>
 
-        <!-- LISTADO -->
-        <div class="glass p-8 rounded-[2.5rem]">
-            <h2 class="text-xl font-black mb-6 uppercase text-slate-400">Panel Activo</h2>
-            <div id="lista-anuncios" class="space-y-4">
-                <p class="text-xs text-slate-500 italic">Cargando anuncios de Postgres...</p>
-            </div>
+        <!-- LISTA -->
+        <div class="glass p-8 rounded-[3rem]">
+            <h2 class="text-xl font-black mb-6 uppercase text-slate-400">Campañas en Tiempo Real</h2>
+            <div id="lista-anuncios" class="space-y-4"></div>
         </div>
     </div>
 
@@ -68,25 +79,45 @@
         const supabaseKey = 'sb_publishable_KpDcdMU8_qJaeztUIhTxFg_DRvLUOQk';
         const _supabase = supabase.createClient(supabaseUrl, supabaseKey);
 
-        async function cargarAnuncios() {
-            const { data } = await _supabase.from('anuncios').select('*').order('id', { ascending: false });
-            const list = document.getElementById('lista-anuncios');
-            list.innerHTML = "";
+        document.getElementById('file-upload').addEventListener('change', async (e) => {
+            const file = e.target.files[0];
+            if (!file) return;
+            const fileName = `${Date.now()}_${file.name}`;
+            const { data } = await _supabase.storage.from('anuncios').upload(fileName, file);
             if (data) {
+                const { data: urlData } = _supabase.storage.from('anuncios').getPublicUrl(fileName);
+                document.getElementById('med').value = urlData.publicUrl;
+                alert("Multimedia lista");
+            }
+        });
+
+        async function cargarDashboard() {
+            const { data } = await _supabase.from('anuncios').select('*').order('id', { ascending: false });
+            if (data) {
+                let v = 0, c = 0;
+                const list = document.getElementById('lista-anuncios');
+                list.innerHTML = "";
                 data.forEach(ad => {
+                    v += ad.vistas || 0; c += ad.clics || 0;
                     list.innerHTML += `
-                        <div class="bg-black/40 p-5 rounded-3xl flex items-center justify-between border border-white/5">
-                            <div class="truncate w-40">
-                                <p class="font-black text-blue-400 text-[10px] uppercase">${ad.titulo}</p>
-                                <p class="text-xs text-slate-300">${ad.media}</p>
+                        <div class="bg-black/40 p-5 rounded-[2rem] flex items-center justify-between border border-white/5">
+                            <div class="truncate pr-4 text-xs font-bold uppercase">
+                                <p class="text-blue-400 text-[9px] mb-1">${ad.titulo}</p>
+                                <p>${ad.media.substring(0,20)}...</p>
+                                <div class="flex gap-3 mt-1 text-[8px] text-slate-500">
+                                    <span>👁️ ${ad.vistas || 0}</span> <span>🎯 ${ad.clics || 0}</span>
+                                </div>
                             </div>
                             <div class="flex gap-2">
-                                <button onclick='prepararEdicion(${JSON.stringify(ad)})' class="text-blue-400 font-bold text-[10px]">EDITAR</button>
+                                <button onclick='prepararEdicion(${JSON.stringify(ad)})' class="bg-blue-600/20 text-blue-400 px-4 py-2 rounded-xl text-[10px] font-bold">EDITAR</button>
                                 <button onclick="borrar(${ad.id})" class="text-red-500">🗑️</button>
                             </div>
                         </div>
                     `;
                 });
+                document.getElementById('m-vistas').innerText = v;
+                document.getElementById('m-clics').innerText = c;
+                document.getElementById('m-ctr').innerText = v > 0 ? ((c/v)*100).toFixed(1) + "%" : "0%";
             }
         }
 
@@ -98,47 +129,37 @@
                 subtitulo: document.getElementById('sub').value,
                 tipo: document.getElementById('tip').value,
                 color: document.getElementById('col').value,
-                textura: document.getElementById('tex').value,
-                fuente: document.getElementById('fnt').value,
                 link: document.getElementById('lin').value || "https://wa.me/593",
                 activo: true
             };
-
-            if (id) { await _supabase.from('anuncios').update(payload).eq('id', id); }
-            else { await _supabase.from('anuncios').insert([payload]); }
-            resetForm(); cargarAnuncios();
+            if (id) await _supabase.from('anuncios').update(payload).eq('id', id);
+            else await _supabase.from('anuncios').insert([payload]);
+            resetForm(); cargarDashboard();
         }
 
-        async function borrar(id) {
-            if (confirm("¿Eliminar anuncio?")) {
-                await _supabase.from('anuncios').delete().eq('id', id);
-                cargarAnuncios();
-            }
-        }
-
-        function prepararEdicion(ad) {
+        window.prepararEdicion = (ad) => {
             document.getElementById('edit-id').value = ad.id;
             document.getElementById('tit').value = ad.titulo;
             document.getElementById('med').value = ad.media;
             document.getElementById('sub').value = ad.subtitulo;
             document.getElementById('tip').value = ad.tipo;
             document.getElementById('col').value = ad.color;
-            document.getElementById('tex').value = ad.textura;
-            document.getElementById('fnt').value = ad.fuente;
             document.getElementById('lin').value = ad.link;
             document.getElementById('btn-save').innerText = "Guardar Cambios";
             document.getElementById('btn-cancel').classList.remove('hidden');
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-        }
+        };
 
-        function resetForm() {
+        window.resetForm = () => {
             document.getElementById('edit-id').value = "";
             document.querySelectorAll('input, textarea').forEach(i => i.value = "");
-            document.getElementById('btn-save').innerText = "Lanzar Anuncio";
+            document.getElementById('btn-save').innerText = "Publicar en Postgres";
             document.getElementById('btn-cancel').classList.add('hidden');
-        }
+        };
 
-        cargarAnuncios();
+        async function borrar(id) { if(confirm("¿Eliminar?")) { await _supabase.from('anuncios').delete().eq('id', id); cargarDashboard(); } }
+        
+        cargarDashboard();
+        setInterval(cargarDashboard, 10000);
     </script>
 </body>
 </html>
